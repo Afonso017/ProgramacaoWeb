@@ -11,24 +11,24 @@ import jakarta.persistence.Id;
 public class PriceEntry {
   @Id
   @GeneratedValue
-  private BigDecimal id;
+  private Long id;
 
-  @Column(precision = 5, scale = 2)
   private Character key;
 
-  private Float value;
+  @Column(precision = 5, scale = 2)
+  private BigDecimal value;
 
   /**
    * @return Long return the id
    */
-  public BigDecimal getId() {
+  public Long getId() {
     return id;
   }
 
   /**
    * @param id the id to set
    */
-  public void setId(BigDecimal id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -49,14 +49,14 @@ public class PriceEntry {
   /**
    * @return Float return the value
    */
-  public Float getValue() {
+  public BigDecimal getValue() {
     return value;
   }
 
   /**
    * @param value the value to set
    */
-  public void setValue(Float value) {
+  public void setValue(BigDecimal value) {
     this.value = value;
   }
 }
