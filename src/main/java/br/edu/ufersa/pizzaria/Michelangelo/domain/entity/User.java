@@ -2,12 +2,15 @@ package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Email;
 
 @Entity
 public class User {
 
     @Id
     private Long id;
+
+    @Email
     private String email;
     private String password;
 
@@ -23,5 +26,21 @@ public class User {
 
     public Long getId() {
         return id;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
