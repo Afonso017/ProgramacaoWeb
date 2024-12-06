@@ -1,5 +1,6 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
+import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,9 +22,9 @@ public class Border {
 
   @PositiveOrZero
   @Column(precision = 5, scale = 2)
-  private float price;
+  private BigDecimal price;
 
-  public Border(String name, float price) {
+  public Border(String name, BigDecimal price) {
     this.name = name;
     this.price = price;
   }
@@ -48,14 +49,14 @@ public class Border {
   /**
    * @return float return the price
    */
-  public float getPrice() {
+  public BigDecimal getPrice() {
     return price;
   }
 
   /**
    * @param price the price to set
    */
-  public void setPrice(float price) {
+  public void setPrice(BigDecimal price) {
     this.price = price;
   }
 }

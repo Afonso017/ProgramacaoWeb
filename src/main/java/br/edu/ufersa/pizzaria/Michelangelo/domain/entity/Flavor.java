@@ -27,9 +27,6 @@ public class Flavor {
   @OneToMany
   private List<PriceEntry> price;
 
-  // @NotNull
-  // private List<Map<Character, Float>> price;
-
   public Flavor(String name, String description, List<PriceEntry> price) {
     this.name = name;
     this.description = description;

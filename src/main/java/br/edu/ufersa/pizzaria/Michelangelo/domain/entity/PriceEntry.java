@@ -1,6 +1,7 @@
 
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
+import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +11,7 @@ import jakarta.persistence.Id;
 public class PriceEntry {
   @Id
   @GeneratedValue
-  private Long id;
+  private BigDecimal id;
 
   @Column(precision = 5, scale = 2)
   private Character key;
@@ -20,14 +21,14 @@ public class PriceEntry {
   /**
    * @return Long return the id
    */
-  public Long getId() {
+  public BigDecimal getId() {
     return id;
   }
 
   /**
    * @param id the id to set
    */
-  public void setId(Long id) {
+  public void setId(BigDecimal id) {
     this.id = id;
   }
 
