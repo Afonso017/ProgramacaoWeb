@@ -8,6 +8,11 @@ public class Employees extends User {
     private boolean isAdmin;
     private boolean isChef;
 
+    public Employees() {}
+    public Employees(String email, String password) {
+        super(email, password);
+    }
+
     public boolean isAdmin() {
         return isAdmin;
     }
