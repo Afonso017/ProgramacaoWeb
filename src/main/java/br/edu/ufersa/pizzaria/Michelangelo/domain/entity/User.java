@@ -1,5 +1,6 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.validation.constraints.Email;
@@ -11,6 +12,7 @@ public class User {
     private Long id;
 
     @Email
+    @Column(unique = true)
     private String email;
     private String password;
 
