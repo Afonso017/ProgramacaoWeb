@@ -17,11 +17,11 @@ public class Border {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @NotBlank
+  @NotBlank(message = "O nome da borda é obrigatório")
   private String name;
 
-  @PositiveOrZero
-  @Column(precision = 5, scale = 2)
+  @PositiveOrZero(message = "O preço da borda deve ser maior ou igual a zero")
+  @Column(precision = 10, scale = 2)
   private BigDecimal price;
 
   public Border(String name, BigDecimal price) {

@@ -15,7 +15,7 @@ public class PriceEntry {
 
   private Character key;
 
-  @Column(precision = 5, scale = 2)
+  @Column(precision = 10, scale = 2)
   private BigDecimal value;
 
   /**

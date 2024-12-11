@@ -2,6 +2,7 @@ package br.edu.ufersa.pizzaria.Michelangelo.api.restControllers;
 
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.UserDTO;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,13 +17,12 @@ public class UserController {
     }
 
     @PostMapping("/createAdmin")
-    public ResponseEntity<?> createAdmin(@RequestBody UserDTO.AuthRequest authRequest) {
+    public ResponseEntity<?> createAdmin(@RequestBody @Valid UserDTO.AuthRequest authRequest) {
         return userService.createAdmin(authRequest);
     }
 
     @GetMapping("/getAdmin")
-    public ResponseEntity<?> getAdmin(@RequestBody UserDTO.EmailRequest emailRequest) {
+    public ResponseEntity<?> getAdmin(@RequestBody @Valid UserDTO.EmailRequest emailRequest) {
         return userService.getAdmin(emailRequest);
     }
-
 }

@@ -13,19 +13,18 @@ import jakarta.validation.constraints.PositiveOrZero;
 @Entity
 @Table(name = "tb_additional")
 public class Additional {
-
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @NotBlank
+  @NotBlank(message = "O nome do adicional é obrigatório")
   private String name;
 
-  @NotBlank
+  @NotBlank(message = "A descrição do adicional é obrigatória")
   private String description;
 
-  @PositiveOrZero
-  @Column(precision = 5, scale = 2)
+  @PositiveOrZero(message = "O preço do adicional deve ser maior ou igual a zero")
+  @Column(precision = 10, scale = 2)
   private BigDecimal price;
 
   private String image;

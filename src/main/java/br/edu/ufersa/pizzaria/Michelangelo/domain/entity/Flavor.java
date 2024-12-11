@@ -17,10 +17,10 @@ public class Flavor {
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
 
-  @NotBlank
+  @NotBlank(message = "O nome do sabor é obrigatório")
   private String name;
 
-  @NotBlank
+  @NotBlank(message = "A descrição do sabor é obrigatória")
   private String description;
 
   @NotNull
