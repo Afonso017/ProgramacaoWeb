@@ -1,26 +1,22 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import jakarta.persistence.*;
+import utils.OrderStatus;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "orders")
+@Table(name = "Orders")
 public class Order {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Long clientID;
-
-    // @Column(nullable = false) Acho que não precisa, pois o email e o endereço
-    // estão no usuário
-    // private String email;
-
-    // @Column(nullable = false)
-    // private String address;
+    @ManyToOne
+    @JoinColumn(name = "client_id", nullable = false)
+    private Client client;
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
@@ -29,62 +25,94 @@ public class Order {
     @Column(nullable = false)
     private OrderStatus status;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Product> items; // Troquei para lista de Product
+    @OneToMany(mappedBy = "order")
+    private List<OrderItem> items;
 
-    @Column(nullable = false)
-    private Double totalAmount;
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalAmount;
 
-    // Getters and setters
+    /**
+     * @return Long return the id
+     */
     public Long getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
-    public Long getclientID() {
-        return clientID;
+    /**
+     * @return Client return the client
+     */
+    public Client getClient() {
+        return client;
     }
 
-    public void setclientID(Long clientID) {
-        this.clientID = clientID;
+    /**
+     * @param client the client to set
+     */
+    public void setClient(Client client) {
+        this.client = client;
     }
 
+    /**
+     * @return LocalDateTime return the orderDate
+     */
     public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
+    /**
+     * @param orderDate the orderDate to set
+     */
     public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
+    /**
+     * @return OrderStatus return the status
+     */
     public OrderStatus getStatus() {
         return status;
     }
 
+    /**
+     * @param status the status to set
+     */
     public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
-    public List<Product> getItems() {
+    /**
+     * @return List<OrderItem> return the items
+     */
+    public List<OrderItem> getItems() {
         return items;
     }
 
-    public void setItems(List<Product> items) {
+    /**
+     * @param items the items to set
+     */
+    public void setItems(List<OrderItem> items) {
         this.items = items;
     }
 
-    public Double getTotalAmount() {
+    /**
+     * @return BigDecimal return the totalAmount
+     */
+    public BigDecimal getTotalAmount() {
         return totalAmount;
     }
 
-    public void setTotalAmount(Double totalAmount) {
+    /**
+     * @param totalAmount the totalAmount to set
+     */
+    public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
     }
 
-    public enum OrderStatus {
-        PENDING, CONFIRMED, DELIVERED, CANCELLED
-    }
 }

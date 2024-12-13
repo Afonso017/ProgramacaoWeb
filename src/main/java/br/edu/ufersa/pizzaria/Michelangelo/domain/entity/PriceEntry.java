@@ -6,6 +6,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import utils.PizzaSizes;
 
 @Entity
 public class PriceEntry {
@@ -13,7 +14,8 @@ public class PriceEntry {
   @GeneratedValue
   private Long id;
 
-  private Character key;
+  @Column(nullable = false)
+  private PizzaSizes variation;
 
   @Column(precision = 10, scale = 2)
   private BigDecimal value;
@@ -21,8 +23,8 @@ public class PriceEntry {
   public PriceEntry() {
   }
 
-  public PriceEntry(Character key, BigDecimal value) {
-    this.key = key;
+  public PriceEntry(PizzaSizes variation, BigDecimal value) {
+    this.variation = variation;
     this.value = value;
   }
 
@@ -41,21 +43,21 @@ public class PriceEntry {
   }
 
   /**
-   * @return Character return the key
+   * @return PizzaSizes return the variation
    */
-  public Character getKey() {
-    return key;
+  public PizzaSizes getVariation() {
+    return variation;
   }
 
   /**
-   * @param key the key to set
+   * @param variation the variation to set
    */
-  public void setKey(Character key) {
-    this.key = key;
+  public void setVariation(PizzaSizes variation) {
+    this.variation = variation;
   }
 
   /**
-   * @return Float return the value
+   * @return BigDecimal return the value
    */
   public BigDecimal getValue() {
     return value;
@@ -67,4 +69,5 @@ public class PriceEntry {
   public void setValue(BigDecimal value) {
     this.value = value;
   }
+
 }

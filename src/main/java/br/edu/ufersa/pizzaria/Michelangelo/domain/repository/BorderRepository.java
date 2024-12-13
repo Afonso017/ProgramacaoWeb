@@ -6,5 +6,5 @@ import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Border;
 
 @Repository
 public interface BorderRepository extends JpaRepository<Border, Long> {
-
+  public Border findByName(String name);
 }

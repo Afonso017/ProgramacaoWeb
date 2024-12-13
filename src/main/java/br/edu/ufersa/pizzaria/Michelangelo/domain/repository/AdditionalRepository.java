@@ -6,5 +6,5 @@ import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Additional;
 
 @Repository
 public interface AdditionalRepository extends JpaRepository<Additional, Long> {
-
+  public Additional findByName(String name);
 }
