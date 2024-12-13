@@ -16,7 +16,7 @@ public class AdditionalDTO {
   public record AdditionalRequest(
       @NotBlank String name,
       @NotBlank String description,
-      @PositiveOrZero @Column(precision = 10, scale = 2) BigDecimal price,
+      @PositiveOrZero @Column(precision = 10, scale = 2, nullable = false) BigDecimal price,
       String image) {
   }
 }

@@ -13,6 +13,6 @@ public class BorderDTO {
 
   public record BorderRequest(
       @NotBlank String name,
-      @PositiveOrZero @Column(precision = 10, scale = 2) BigDecimal price) {
+      @PositiveOrZero @Column(precision = 10, scale = 2, nullable = false) BigDecimal price) {
   }
 }

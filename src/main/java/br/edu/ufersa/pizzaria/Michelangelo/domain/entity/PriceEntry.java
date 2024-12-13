@@ -18,6 +18,14 @@ public class PriceEntry {
   @Column(precision = 10, scale = 2)
   private BigDecimal value;
 
+  public PriceEntry() {
+  }
+
+  public PriceEntry(Character key, BigDecimal value) {
+    this.key = key;
+    this.value = value;
+  }
+
   /**
    * @return Long return the id
    */

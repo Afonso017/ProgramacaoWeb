@@ -1,11 +1,12 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
 @Table(name = "pizzas")
-
 public class Pizza {
 
     @Id
@@ -25,18 +26,14 @@ public class Pizza {
     private Border border;
 
     @ManyToMany
-    @JoinTable(
-            name = "pizza_aditionals",
-            joinColumns = @JoinColumn(name = "pizza_id"),
-            inverseJoinColumns = @JoinColumn(name = "aditional_id")
-    )
-    private List<Aditional> aditionals;
+    @JoinTable(name = "pizza_additional", joinColumns = @JoinColumn(name = "pizza_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
+    private List<Additional> aditionals;
 
     @Column(nullable = false)
     private String size; // Exemplo: Pequena, Média, Grande
 
-    @Column(nullable = false)
-    private Double totalPrice; // Preço total da pizza (incluindo adicionais e borda)
+    @Column(precision = 10, scale = 2, nullable = false)
+    private BigDecimal totalPrice;
 
     // Getters e Setters
     public Long getId() {
@@ -71,11 +68,11 @@ public class Pizza {
         this.border = border;
     }
 
-    public List<Aditional> getAditionals() {
+    public List<Additional> getAditionals() {
         return aditionals;
     }
 
-    public void setAditionals(List<Aditional> aditionals) {
+    public void setAditionals(List<Additional> aditionals) {
         this.aditionals = aditionals;
     }
 
@@ -87,11 +84,11 @@ public class Pizza {
         this.size = size;
     }
 
-    public Double getTotalPrice() {
+    public BigDecimal getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Double totalPrice) {
+    public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
 }

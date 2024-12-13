@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "tb_flavor")
+@Table(name = "flavor")
 public class Flavor {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -27,13 +27,13 @@ public class Flavor {
   @OneToMany
   private List<PriceEntry> price;
 
+  public Flavor() {
+  }
+
   public Flavor(String name, String description, List<PriceEntry> price) {
     this.name = name;
     this.description = description;
     this.price = price;
-  }
-
-  public Flavor() {
   }
 
   /**

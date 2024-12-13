@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
 @Entity
-@Table(name = "tb_border")
+@Table(name = "border")
 public class Border {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,15 +21,15 @@ public class Border {
   private String name;
 
   @PositiveOrZero(message = "O preço da borda deve ser maior ou igual a zero")
-  @Column(precision = 10, scale = 2)
+  @Column(precision = 10, scale = 2, nullable = false)
   private BigDecimal price;
+
+  public Border() {
+  }
 
   public Border(String name, BigDecimal price) {
     this.name = name;
     this.price = price;
-  }
-
-  public Border() {
   }
 
   /**

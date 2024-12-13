@@ -6,7 +6,6 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-
 public class Order {
 
     @Id
@@ -14,24 +13,24 @@ public class Order {
     private Long id;
 
     @Column(nullable = false)
-    private Long userId;
+    private Long clientID;
 
-    @Column(nullable = false)
-    private String email;
+    // @Column(nullable = false) Acho que não precisa, pois o email e o endereço
+    // estão no usuário
+    // private String email;
 
-    @Column(nullable = false)
-    private String address;
+    // @Column(nullable = false)
+    // private String address;
 
     @Column(nullable = false)
     private LocalDateTime orderDate;
-
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private OrderStatus status;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderItem> items;
+    private List<Product> items; // Troquei para lista de Product
 
     @Column(nullable = false)
     private Double totalAmount;
@@ -45,28 +44,12 @@ public class Order {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getclientID() {
+        return clientID;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
+    public void setclientID(Long clientID) {
+        this.clientID = clientID;
     }
 
     public LocalDateTime getOrderDate() {
@@ -85,11 +68,11 @@ public class Order {
         this.status = status;
     }
 
-    public List<OrderItem> getItems() {
+    public List<Product> getItems() {
         return items;
     }
 
-    public void setItems(List<OrderItem> items) {
+    public void setItems(List<Product> items) {
         this.items = items;
     }
 
