@@ -106,4 +106,3 @@ ProgramacaoWeb/
 ## Licença
 Este projeto está licenciado sob a Licença MIT. Veja o arquivo LICENSE para mais detalhes.
 ```
-Você pode atualizar o README.md do seu projeto com este conteúdo para fornecer mais informações e estrutura.
