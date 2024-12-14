@@ -1,6 +1,7 @@
-# ProgramacaoWeb
-
-Repositório do projeto da disciplina de programação web da faculdade.
+## Disciplina: Programação Web 🧑‍💻 
+### Curso: Ciência da Computação 💻  
+### Universidade: UFERSA - Universidade Federal Rural do Semi-Árido 🌱  
+### Ano: 2024 📅  
 
 ## Sumário
 - [Descrição](#descrição)
