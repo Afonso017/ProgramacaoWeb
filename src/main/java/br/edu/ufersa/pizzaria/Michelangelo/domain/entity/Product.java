@@ -1,7 +1,7 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import java.math.BigDecimal;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,9 +29,20 @@ public class Product {
   private String description;
 
   @NotNull
+  @Column(precision = 10, scale = 2)
   private BigDecimal price;
 
   private String image;
+
+  public Product() {
+  }
+
+  public Product(String name, String description, BigDecimal price, String image) {
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.image = image;
+  }
 
   /**
    * @return Long return the id

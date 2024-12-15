@@ -33,6 +33,23 @@ public class OrderItem {
   @Column(precision = 10, scale = 2, nullable = false)
   private BigDecimal price;
 
+  public OrderItem() {
+  }
+
+  public OrderItem(Product product, Order order, int quantity, BigDecimal price) {
+    this.product = product;
+    this.order = order;
+    this.quantity = quantity;
+    this.price = price;
+  }
+
+  public OrderItem(Product product, Order order, int quantity) {
+    this.product = product;
+    this.order = order;
+    this.quantity = quantity;
+    this.price = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+  }
+
   /**
    * @return Long return the id
    */

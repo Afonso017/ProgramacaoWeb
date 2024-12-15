@@ -16,7 +16,7 @@ public class BorderService {
     this.repository = borderRepository;
   }
 
-  public List<BorderResponse> findAll() {
+  public List<BorderResponse> listAll() {
     List<BorderResponse> borders = repository.findAll()
         .stream().map(border -> new BorderResponse(border))
         .collect(Collectors.toList());

@@ -1,6 +1,8 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +11,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "flavor")
@@ -23,8 +26,9 @@ public class Flavor {
   @NotBlank(message = "A descrição do sabor é obrigatória")
   private String description;
 
-  @NotNull
-  @OneToMany
+  @NotNull(message = "O preço do sabor é obrigatório")
+  @OneToMany(mappedBy = "flavor", cascade = CascadeType.ALL, orphanRemoval = true)
+  @Size(min = 3, max = 3, message = "Price list must have exactly 3 entries")
   private List<PriceEntry> price;
 
   public Flavor() {
