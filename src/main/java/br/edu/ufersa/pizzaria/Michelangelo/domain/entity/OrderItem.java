@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Positive;
 @Table(name = "OrderItem")
 public class OrderItem {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @ManyToOne

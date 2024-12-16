@@ -24,7 +24,7 @@ public class BorderService {
     return borders;
   }
 
-  public BorderResponse create(BorderCreate borderCreate) {
+  public BorderResponse save(BorderCreate borderCreate) {
     if (repository.findByName(borderCreate.name()) != null) {
       throw new IllegalArgumentException("Já existe uma borda com o nome informado");
     }

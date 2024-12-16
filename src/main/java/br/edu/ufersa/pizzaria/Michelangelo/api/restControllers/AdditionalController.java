@@ -33,7 +33,7 @@ public class AdditionalController {
 
   @PostMapping
   public ResponseEntity<AdditionalResponse> create(@Valid @RequestBody AdditionalCreate additional) {
-    return new ResponseEntity<AdditionalResponse>(service.create(additional), HttpStatus.CREATED);
+    return new ResponseEntity<AdditionalResponse>(service.save(additional), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

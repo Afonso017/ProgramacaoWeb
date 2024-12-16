@@ -14,7 +14,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 @Table(name = "additional")
 public class Additional {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @NotBlank(message = "O nome do adicional é obrigatório")

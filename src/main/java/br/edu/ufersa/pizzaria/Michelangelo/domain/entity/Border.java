@@ -14,7 +14,7 @@ import jakarta.validation.constraints.PositiveOrZero;
 @Table(name = "border")
 public class Border {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @NotBlank(message = "O nome da borda é obrigatório")

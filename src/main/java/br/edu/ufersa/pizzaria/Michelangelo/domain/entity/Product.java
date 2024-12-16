@@ -19,7 +19,7 @@ import jakarta.persistence.Inheritance;
 @DiscriminatorColumn(name = "product_type")
 public class Product {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
   @NotBlank

@@ -1,7 +1,6 @@
 package br.edu.ufersa.pizzaria.Michelangelo.api.restControllers;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -34,7 +33,7 @@ public class FlavorController {
 
   @PostMapping
   public ResponseEntity<FlavorResponse> create(@Valid @RequestBody FlavorCreate flavor) {
-    return new ResponseEntity<FlavorResponse>(service.create(flavor), HttpStatus.CREATED);
+    return new ResponseEntity<FlavorResponse>(service.save(flavor), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

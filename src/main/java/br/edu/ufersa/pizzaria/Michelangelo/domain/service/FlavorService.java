@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorResponse;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Flavor;
+import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.PriceEntry;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.repository.FlavorRepository;
+import jakarta.transaction.Transactional;
 
 @Service
 public class FlavorService {
@@ -16,6 +18,7 @@ public class FlavorService {
     this.repository = flavorRepository;
   }
 
+  @Transactional
   public List<FlavorResponse> listAll() {
     List<FlavorResponse> flavorList = repository.findAll()
         .stream().map(flavor -> new FlavorResponse(flavor))
@@ -24,7 +27,8 @@ public class FlavorService {
     return flavorList;
   }
 
-  public FlavorResponse create(FlavorCreate flavorCreate) {
+  @Transactional
+  public FlavorResponse save(FlavorCreate flavorCreate) {
     if (repository.findByName(flavorCreate.name()) != null) {
       throw new IllegalArgumentException("Já existe um sabor com o nome informado");
     }
@@ -34,19 +38,26 @@ public class FlavorService {
     return new FlavorResponse(newFlavor);
   }
 
+  @Transactional
   public FlavorResponse update(Long id, FlavorCreate flavorCreate) {
-    Flavor flavor = repository.findById(id)
+    Flavor existingFlavor = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
 
-    flavor.setName(flavorCreate.name());
-    flavor.setDescription(flavorCreate.description());
-    flavor.setPrice(flavorCreate.price());
+    existingFlavor.setName(flavorCreate.name());
+    existingFlavor.setDescription(flavorCreate.description());
 
-    repository.save(flavor);
+    existingFlavor.getPrice().clear();
+    for (PriceEntry price : flavorCreate.price()) {
+      price.setFlavor(existingFlavor);
+      existingFlavor.getPrice().add(price);
+    }
 
-    return new FlavorResponse(flavor);
+    repository.save(existingFlavor);
+
+    return new FlavorResponse(existingFlavor);
   }
 
+  @Transactional
   public void delete(Long id) {
     Flavor flavor = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
@@ -54,6 +65,7 @@ public class FlavorService {
     repository.delete(flavor);
   }
 
+  @Transactional
   public FlavorResponse findById(Long id) {
     Flavor flavor = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));

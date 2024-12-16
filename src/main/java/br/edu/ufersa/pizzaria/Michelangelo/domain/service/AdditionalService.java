@@ -23,7 +23,7 @@ public class AdditionalService {
     return additionalList;
   }
 
-  public AdditionalResponse create(AdditionalCreate additionalCreate) {
+  public AdditionalResponse save(AdditionalCreate additionalCreate) {
     if (repository.findByName(additionalCreate.name()) != null) {
       throw new IllegalArgumentException("Já existe um adicional com o nome informado");
     }

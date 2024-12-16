@@ -33,7 +33,7 @@ public class BorderController {
 
   @PostMapping
   public ResponseEntity<BorderResponse> create(@Valid @RequestBody BorderCreate border) {
-    return new ResponseEntity<BorderResponse>(service.create(border), HttpStatus.CREATED);
+    return new ResponseEntity<BorderResponse>(service.save(border), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

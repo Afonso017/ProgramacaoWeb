@@ -7,21 +7,20 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 import utils.PizzaSizes;
 
 @Entity
 @Table(name = "price_entry")
 public class PriceEntry {
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   private Long id;
 
-  @NotNull
   @Enumerated(EnumType.STRING)
   private PizzaSizes variation;
 
@@ -94,7 +93,9 @@ public class PriceEntry {
    * @param flavor the flavor to set
    */
   public void setFlavor(Flavor flavor) {
+    if (flavor == null) {
+      throw new IllegalArgumentException("Flavor não pode ser nulo em PriceEntry");
+    }
     this.flavor = flavor;
   }
-
 }

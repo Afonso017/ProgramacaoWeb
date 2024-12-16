@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 @Table(name = "Orders")
 public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne
@@ -39,6 +39,18 @@ public class Order {
 
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal totalAmount;
+
+    public Order() {
+    }
+
+    public Order(Client client, LocalDateTime orderDate, OrderStatus status, List<OrderItem> items,
+            BigDecimal totalAmount) {
+        this.client = client;
+        this.orderDate = orderDate;
+        this.status = status;
+        this.items = items;
+        this.totalAmount = totalAmount;
+    }
 
     /**
      * @return Long return the id
