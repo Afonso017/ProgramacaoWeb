@@ -2,12 +2,10 @@ package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.validation.constraints.NotBlank;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "client_id")
 public class ClientLocal extends Client {
-  @NotBlank
   private int clientTable; // Específico para clientes presenciais (local)
 
   public ClientLocal() {

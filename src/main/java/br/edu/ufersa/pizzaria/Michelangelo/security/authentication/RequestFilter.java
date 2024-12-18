@@ -1,8 +1,5 @@
 package br.edu.ufersa.pizzaria.Michelangelo.security.authentication;
 
-import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.User;
-import br.edu.ufersa.pizzaria.Michelangelo.domain.repository.UserRepository;
-import br.edu.ufersa.pizzaria.Michelangelo.security.userdetails.UserDetailsImpl;
 import br.edu.ufersa.pizzaria.Michelangelo.security.userdetails.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
