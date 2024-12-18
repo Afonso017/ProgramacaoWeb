@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorResponse;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorUpdate;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.PriceDTO.PriceCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Flavor;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.PriceEntry;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.repository.FlavorRepository;
@@ -39,18 +41,11 @@ public class FlavorService {
   }
 
   @Transactional
-  public FlavorResponse update(Long id, FlavorCreate flavorCreate) {
+  public FlavorResponse update(Long id, FlavorUpdate flavorCreate) {
     Flavor existingFlavor = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
 
-    existingFlavor.setName(flavorCreate.name());
-    existingFlavor.setDescription(flavorCreate.description());
-
-    existingFlavor.getPrice().clear();
-    for (PriceEntry price : flavorCreate.price()) {
-      price.setFlavor(existingFlavor);
-      existingFlavor.getPrice().add(price);
-    }
+    existingFlavor.setFlavor(flavorCreate);
 
     repository.save(existingFlavor);
 

@@ -1,14 +1,13 @@
 package br.edu.ufersa.pizzaria.Michelangelo.api.dto;
 
 import java.math.BigDecimal;
-
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Additional;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 
 public class AdditionalDTO {
   public record AdditionalResponse(
+      Long id,
       String name,
       String description,
       BigDecimal price,
@@ -16,6 +15,7 @@ public class AdditionalDTO {
 
     public AdditionalResponse(Additional additional) {
       this(
+          additional.getId(),
           additional.getName(),
           additional.getDescription(),
           additional.getPrice(),
@@ -28,7 +28,7 @@ public class AdditionalDTO {
   public record AdditionalCreate(
       @NotBlank String name,
       @NotBlank String description,
-      @PositiveOrZero @Column(precision = 10, scale = 2, nullable = false) BigDecimal price,
+      @PositiveOrZero BigDecimal price,
       String image) {
 
     public Additional toEntity() {

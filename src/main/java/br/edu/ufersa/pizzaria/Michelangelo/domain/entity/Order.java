@@ -3,7 +3,17 @@ package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 import utils.OrderStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderCreate;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderItemCreate;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderItemUpdate;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderUpdate;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -28,14 +38,15 @@ public class Order {
     private Client client;
 
     @Column(nullable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime orderDate;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private OrderStatus status = OrderStatus.PENDING;
 
-    @OneToMany(mappedBy = "order")
-    private List<OrderItem> items;
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
 
     @Column(precision = 10, scale = 2, nullable = false)
     private BigDecimal totalAmount;
@@ -43,11 +54,25 @@ public class Order {
     public Order() {
     }
 
+    public Order(Long id, Client client, LocalDateTime orderDate, OrderStatus status, List<OrderItem> items,
+            BigDecimal totalAmount) {
+        this.client = client;
+        this.orderDate = orderDate;
+        this.status = status;
+        this.items = items;
+        this.totalAmount = totalAmount;
+    }
+
     public Order(Client client, LocalDateTime orderDate, OrderStatus status, List<OrderItem> items,
             BigDecimal totalAmount) {
         this.client = client;
         this.orderDate = orderDate;
         this.status = status;
+        this.items = items;
+        this.totalAmount = totalAmount;
+    }
+
+    public Order(List<OrderItem> items, BigDecimal totalAmount) {
         this.items = items;
         this.totalAmount = totalAmount;
     }
@@ -119,7 +144,10 @@ public class Order {
      * @param items the items to set
      */
     public void setItems(List<OrderItem> items) {
-        this.items = items;
+        this.items.clear();
+        for (OrderItem item : items) {
+            this.addItem(item);
+        }
     }
 
     /**
@@ -134,6 +162,32 @@ public class Order {
      */
     public void setTotalAmount(BigDecimal totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public void setOrder(OrderCreate orderCreate) {
+        this.client = orderCreate.clientId();
+        this.orderDate = orderCreate.orderDate();
+        this.status = OrderStatus.PENDING;
+        this.totalAmount = orderCreate.totalAmount();
+        this.setItems(orderCreate.items().stream().map(OrderItemCreate::toEntity).collect(Collectors.toList()));
+    }
+
+    public void setOrder(OrderUpdate orderUpdate) {
+        this.client = orderUpdate.clientId();
+        this.orderDate = orderUpdate.orderDate();
+        this.status = orderUpdate.status();
+        this.totalAmount = orderUpdate.totalAmount();
+        this.setItems(orderUpdate.items().stream().map(OrderItemUpdate::toEntity).collect(Collectors.toList()));
+    }
+
+    public void addItem(OrderItem item) {
+        items.add(item);
+        item.setOrder(this); // Define a referência inversa
+    }
+
+    public void removeItem(OrderItem item) {
+        items.remove(item);
+        item.setOrder(null); // Remove a referência inversa
     }
 
 }

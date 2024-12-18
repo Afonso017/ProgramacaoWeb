@@ -1,22 +1,24 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.persistence.InheritanceType;
 import jakarta.persistence.Inheritance;
 
 @Entity
-@Table(name = "Product")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "product_type")
+@Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "product_type")
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = Pizza.class, name = "pizza"),
+})
 public class Product {
   @Id
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -37,7 +39,19 @@ public class Product {
   public Product() {
   }
 
+  public Product(Long id) {
+    this.id = id;
+  }
+
   public Product(String name, String description, BigDecimal price, String image) {
+    this.name = name;
+    this.description = description;
+    this.price = price;
+    this.image = image;
+  }
+
+  public Product(Long id, String name, String description, BigDecimal price, String image) {
+    this.id = id;
     this.name = name;
     this.description = description;
     this.price = price;
@@ -73,16 +87,16 @@ public class Product {
   }
 
   /**
-   * @return String return the descrition
+   * @return String return the description
    */
-  public String getDescrition() {
+  public String getDescription() {
     return description;
   }
 
   /**
-   * @param description the descrition to set
+   * @param description the description to set
    */
-  public void setDescrition(String description) {
+  public void setDescription(String description) {
     this.description = description;
   }
 

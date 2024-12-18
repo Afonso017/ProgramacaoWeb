@@ -40,6 +40,20 @@ public class Additional {
   }
 
   /**
+   * @return Long return the id
+   */
+  public Long getId() {
+    return id;
+  }
+
+  /**
+   * @param id the id to set
+   */
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  /**
    * @return String return the name
    */
   public String getName() {
@@ -68,7 +82,7 @@ public class Additional {
   }
 
   /**
-   * @return float return the price
+   * @return BigDecimal return the price
    */
   public BigDecimal getPrice() {
     return price;
@@ -94,4 +108,5 @@ public class Additional {
   public void setImage(String image) {
     this.image = image;
   }
+
 }

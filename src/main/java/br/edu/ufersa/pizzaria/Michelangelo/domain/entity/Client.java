@@ -1,63 +1,44 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.InheritanceType;
 
 @Entity
-public class Client extends User {
-    private String address;
-    private String clientTable;
-    private String telefone;
+@Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "client_type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = ClientDelivery.class, name = "delivery"),
+        @JsonSubTypes.Type(value = ClientLocal.class, name = "local"),
+        @JsonSubTypes.Type(value = ClientRetirement.class, name = "retirement")
+})
+@PrimaryKeyJoinColumn(name = "client_id")
+public abstract class Client extends User {
+    private String phone;
 
     public Client() {
     }
 
-    public Client(String email, String password, String address, String clientTable, String telefone) {
+    public Client(String email, String password, String phone) {
         super(email, password);
-        this.address = address;
-        this.clientTable = clientTable;
-        this.telefone = telefone;
+        this.phone = phone;
     }
 
     /**
-     * @return String return the address
+     * @return String return the phone
      */
-    public String getAddress() {
-        return address;
+    public String getPhone() {
+        return phone;
     }
 
     /**
-     * @param address the address to set
+     * @param phone the phone to set
      */
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    /**
-     * @return String return the clientTable
-     */
-    public String getClientTable() {
-        return clientTable;
-    }
-
-    /**
-     * @param clientTable the clientTable to set
-     */
-    public void setClientTable(String clientTable) {
-        this.clientTable = clientTable;
-    }
-
-    /**
-     * @return String return the telefone
-     */
-    public String getTelefone() {
-        return telefone;
-    }
-
-    /**
-     * @param telefone the telefone to set
-     */
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
 }

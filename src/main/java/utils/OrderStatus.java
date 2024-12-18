@@ -3,6 +3,7 @@ package utils;
 public enum OrderStatus {
   PENDING("Pendente"),
   IN_PROGRESS("Em andamento"),
+  FINALIZED("Finalizado"),
   DELIVERED("Entregue"),
   CANCELED("Cancelado");
 
@@ -15,5 +16,4 @@ public enum OrderStatus {
   public String getStatus() {
     return status;
   }
-
 }

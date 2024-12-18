@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorResponse;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorUpdate;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.service.FlavorService;
 import jakarta.validation.Valid;
 
@@ -38,7 +39,7 @@ public class FlavorController {
 
   @PutMapping("/{id}")
   public ResponseEntity<FlavorResponse> update(@PathVariable Long id,
-      @Valid @RequestBody FlavorCreate flavor) {
+      @Valid @RequestBody FlavorUpdate flavor) {
     return new ResponseEntity<>(service.update(id, flavor), HttpStatus.OK);
   }
 
