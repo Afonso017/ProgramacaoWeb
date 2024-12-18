@@ -7,16 +7,21 @@ import jakarta.validation.constraints.Size;
 
 public class UserDTO {
 
-    public record AuthRequest(@Email @Column(unique = true) String email, @NotNull String password) {
+    public record AuthRequest(
+        @Email @Column(unique = true) String email,
+        @NotNull String password
+    ) {}
 
-    }
+    public record EmailRequest(
+        @Email @Column(unique = true) String email
+    ) {}
 
-    public record EmailRequest(@Email @Column(unique = true) String email) {
+    public record PasswordRequest(
+        @NotNull @Size(min = 8) String password
+    ) {}
 
-    }
-
-    public record PasswordRequest(@NotNull @Size(min = 8) String password) {
-
-    }
+    public record TokenDto(
+        String token
+    ) {}
 
 }
