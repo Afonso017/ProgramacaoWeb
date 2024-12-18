@@ -20,4 +20,8 @@ public class UserDTO {
         @NotNull @Size(min = 8) String password
     ) {}
 
+    public record TokenDto(
+        String token
+    ) {}
+
 }

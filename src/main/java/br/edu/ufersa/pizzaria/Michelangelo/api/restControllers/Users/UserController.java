@@ -2,6 +2,7 @@ package br.edu.ufersa.pizzaria.Michelangelo.api.restControllers.Users;
 
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.UserDTO;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.service.UserService;
+import org.springframework.http.HttpStatus;
 import utils.RoleName;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

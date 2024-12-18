@@ -26,7 +26,10 @@ public class SecurityConfig {
     }
 
     public static final String [] NOT_REQUIRED = {
-        "/api/v1/user/login",
+        "/api/v1/user/login"
+    };
+
+    public static final String [] REQUIRED = {
         "/api/v1/user/admin/create"
     };
 
@@ -36,6 +39,7 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(NOT_REQUIRED).permitAll()
+                .requestMatchers(REQUIRED).hasRole("ADMIN")
                 .anyRequest().authenticated()
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

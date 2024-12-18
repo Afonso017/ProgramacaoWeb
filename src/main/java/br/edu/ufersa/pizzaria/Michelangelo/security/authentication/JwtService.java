@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 public class JwtService {
 
     @Value("${jwt.secret}")
-    private static String SECRET_KEY;
+    private String SECRET_KEY;
     private static final String ISSUER = "michelangelo-api";
 
     public String generateToken(UserDetailsImpl user) {
