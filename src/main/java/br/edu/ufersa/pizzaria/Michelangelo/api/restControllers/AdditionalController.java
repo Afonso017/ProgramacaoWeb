@@ -28,12 +28,12 @@ public class AdditionalController {
 
   @GetMapping
   public ResponseEntity<List<AdditionalResponse>> findAll() {
-    return new ResponseEntity<List<AdditionalResponse>>(service.listAll(), HttpStatus.OK);
+    return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
   }
 
   @PostMapping
   public ResponseEntity<AdditionalResponse> create(@Valid @RequestBody AdditionalCreate additional) {
-    return new ResponseEntity<AdditionalResponse>(service.save(additional), HttpStatus.CREATED);
+    return new ResponseEntity<>(service.save(additional), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

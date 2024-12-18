@@ -26,7 +26,10 @@ public class SecurityConfig {
     }
 
     public static final String [] NOT_REQUIRED = {
-        "/api/v1/user/login"
+        "/api/v1/user",
+        "/api/v1/additional",
+        "/api/v1/border",
+        "/api/v1/flavor",
     };
 
     public static final String [] REQUIRED = {
@@ -38,9 +41,9 @@ public class SecurityConfig {
         return httpSecurity
             .csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(NOT_REQUIRED).permitAll()
-                .requestMatchers(REQUIRED).hasRole("ADMIN")
-                .anyRequest().authenticated()
+                //.requestMatchers(NOT_REQUIRED).permitAll()
+                //.requestMatchers(REQUIRED).hasRole("ADMIN")
+                .anyRequest().permitAll()   // Todo: Alterar depois
             )
             .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .httpBasic(Customizer.withDefaults())
