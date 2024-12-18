@@ -17,7 +17,7 @@
 Este projeto foi desenvolvido para a disciplina de Programação Web. O objetivo é criar um sistema web para uma pizzaria, permitindo que os clientes façam pedidos pelo sistema, seja para retirada, delivery ou consumo no local.
 
 ## Funcionalidades
-- Efetuar um Pedido
+- Efetuar Pedidos
 - Gerenciamento de Produtos Vendidos
 - Cadastro de Usuários/Clientes
 - Autenticação (Login e Logout)
