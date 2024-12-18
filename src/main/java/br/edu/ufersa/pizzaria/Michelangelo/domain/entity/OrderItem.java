@@ -1,6 +1,7 @@
 package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import java.math.BigDecimal;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,10 +21,12 @@ public class OrderItem {
 
   @ManyToOne
   @JoinColumn(name = "product_id", nullable = false)
+  @JsonIgnore
   private Product product;
 
   @ManyToOne
   @JoinColumn(name = "order_id", nullable = false)
+  @JsonIgnore
   private Order order;
 
   @Positive(message = "A quantidade deve ser maior que zero")
@@ -36,18 +39,25 @@ public class OrderItem {
   public OrderItem() {
   }
 
-  public OrderItem(Product product, Order order, int quantity, BigDecimal price) {
+  public OrderItem(Long id, Product product, Order order, int quantity, BigDecimal price) {
+    this.id = id;
     this.product = product;
     this.order = order;
     this.quantity = quantity;
     this.price = price;
   }
 
-  public OrderItem(Product product, Order order, int quantity) {
+  public OrderItem(Product product, int quantity, BigDecimal price) {
+    this.product = product;
+    this.quantity = quantity;
+    this.price = price;
+  }
+
+  public OrderItem(Product product, Order order, int quantity, BigDecimal price) {
     this.product = product;
     this.order = order;
     this.quantity = quantity;
-    this.price = product.getPrice().multiply(BigDecimal.valueOf(quantity));
+    this.price = price;
   }
 
   /**
@@ -72,7 +82,7 @@ public class OrderItem {
   }
 
   /**
-   * @param product the product to set
+   * @param Long the product to set
    */
   public void setProduct(Product product) {
     this.product = product;

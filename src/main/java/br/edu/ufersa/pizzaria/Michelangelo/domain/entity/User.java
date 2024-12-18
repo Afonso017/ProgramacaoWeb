@@ -2,14 +2,28 @@ package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import org.springframework.security.core.GrantedAuthority;
 import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
 import jakarta.validation.constraints.Email;
-
 import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@Inheritance(strategy = InheritanceType.JOINED)
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Long id;
+
+    @Email
+    @Column(unique = true)
+    private String email;
+    private String password;
 
     public User() {
     }

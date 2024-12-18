@@ -2,9 +2,10 @@ package br.edu.ufersa.pizzaria.Michelangelo.domain.entity;
 
 import utils.PizzaSizes;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.PizzaDTO.PizzaCreate;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -12,16 +13,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-@DiscriminatorValue("Pizza")
+@PrimaryKeyJoinColumn(name = "product_id")
 public class Pizza extends Product {
     @ManyToOne
     @JoinColumn(name = "flavor_one_id", nullable = false)
     private Flavor flavorOne;
 
     @ManyToOne
-    @JoinColumn(name = "flavor_two_id", nullable = true) // O segundo sabor é opcional
+    @JoinColumn(name = "flavor_two_id", nullable = true)
     private Flavor flavorTwo;
 
     @ManyToOne
@@ -30,7 +32,7 @@ public class Pizza extends Product {
 
     @ManyToMany
     @JoinTable(name = "pizza_additional", joinColumns = @JoinColumn(name = "pizza_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
-    private List<Additional> aditionals;
+    private List<Additional> aditionals = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
@@ -47,6 +49,46 @@ public class Pizza extends Product {
         this.border = border;
         this.aditionals = aditionals;
         this.size = size;
+    }
+
+    public void setPizza(PizzaCreate pizza) {
+        this.setName(pizza.name());
+        this.setDescription(pizza.description());
+        this.setImage(pizza.image());
+        this.setFlavorOne(pizza.flavorOne());
+        this.setFlavorTwo(pizza.flavorTwo());
+        this.setBorder(pizza.border());
+        this.setAditionals(pizza.aditionals());
+        this.setSize(pizza.size());
+        this.setPrice(this.getPrice());
+    }
+
+    @Override
+    public BigDecimal getPrice() {
+        BigDecimal calculatedPrice = BigDecimal.ZERO;
+
+        // Adiciona o preço do primeiro sabor
+        calculatedPrice = calculatedPrice.add(flavorOne.getPriceEntry(size));
+
+        // Adiciona o preço do segundo sabor (caso exista)
+        if (flavorTwo != null) {
+            calculatedPrice = calculatedPrice.add(flavorTwo.getPriceEntry(size));
+        }
+
+        // Adiciona o preço da borda (caso exista)
+        if (border != null) {
+            calculatedPrice = calculatedPrice.add(border.getPrice());
+        }
+
+        // Adiciona o preço dos adicionais
+        if (aditionals != null && !aditionals.isEmpty()) {
+            for (Additional additional : aditionals) {
+                calculatedPrice = calculatedPrice.add(additional.getPrice());
+            }
+        }
+
+        // Retorna o preço total calculado somado ao preço base
+        return calculatedPrice;
     }
 
     /**

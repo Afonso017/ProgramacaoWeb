@@ -34,6 +34,13 @@ public class PriceEntry {
   public PriceEntry() {
   }
 
+  public PriceEntry(Long id, PizzaSizes variation, BigDecimal value, Flavor flavor) {
+    this.id = id;
+    this.variation = variation;
+    this.value = value;
+    this.flavor = flavor;
+  }
+
   public PriceEntry(PizzaSizes variation, BigDecimal value, Flavor flavor) {
     this.variation = variation;
     this.value = value;
