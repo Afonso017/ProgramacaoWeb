@@ -6,9 +6,7 @@ import org.springframework.stereotype.Service;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorResponse;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.FlavorDTO.FlavorUpdate;
-import br.edu.ufersa.pizzaria.Michelangelo.api.dto.PriceDTO.PriceCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Flavor;
-import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.PriceEntry;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.repository.FlavorRepository;
 import jakarta.transaction.Transactional;
 

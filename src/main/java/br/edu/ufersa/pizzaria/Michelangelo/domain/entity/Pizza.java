@@ -4,10 +4,8 @@ import utils.PizzaSizes;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.PizzaDTO.PizzaCreate;
 import jakarta.persistence.Column;
-import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

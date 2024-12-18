@@ -5,13 +5,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.ProductDTO.ProductCreate;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.ProductDTO.ProductResponse;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Client;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Order;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.OrderItem;
-import br.edu.ufersa.pizzaria.Michelangelo.domain.entity.Product;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
