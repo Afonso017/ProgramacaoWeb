@@ -31,7 +31,7 @@ public class RequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
-            @NonNull HttpServletRequest request, @NonNull HttpServletResponse response, FilterChain filterChain
+            @NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
         if (checkIfEndpointIsNotPublic(request)) {

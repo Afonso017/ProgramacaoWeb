@@ -26,7 +26,7 @@ public class SecurityConfig {
     }
 
     public static final String [] NOT_REQUIRED = {
-        "/api/v1/user",
+        "/api/v1/user/login",
         "/api/v1/additional",
         "/api/v1/border",
         "/api/v1/flavor",
