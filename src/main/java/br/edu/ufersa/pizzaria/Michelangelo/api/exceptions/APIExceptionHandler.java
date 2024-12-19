@@ -1,4 +1,4 @@
-package exceptions;
+package br.edu.ufersa.pizzaria.Michelangelo.api.exceptions;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;

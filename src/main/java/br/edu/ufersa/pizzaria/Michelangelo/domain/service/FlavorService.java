@@ -27,8 +27,7 @@ public class FlavorService {
     return flavorList;
   }
 
-  @Transactional
-  public FlavorResponse save(FlavorCreate flavorCreate) {
+  public FlavorResponse save(FlavorCreate flavorCreate) throws IllegalArgumentException {
     if (repository.findByName(flavorCreate.name()) != null) {
       throw new IllegalArgumentException("Já existe um sabor com o nome informado");
     }
