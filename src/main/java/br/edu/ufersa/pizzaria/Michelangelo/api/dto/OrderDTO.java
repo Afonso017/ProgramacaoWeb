@@ -43,6 +43,13 @@ public class OrderDTO {
     }
   }
 
+  public record StatusResponse(
+      String status) {
+    public StatusResponse(String status) {
+      this.status = status;
+    }
+  }
+
   public record OrderResponse(
       Client clientId,
       LocalDateTime orderDate,

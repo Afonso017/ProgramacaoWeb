@@ -25,6 +25,7 @@ public class APIExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<Object> handleDataIntegrityException(DataIntegrityViolationException ex) {
         StringBuilder mensagem = new StringBuilder("Erro de violação de integridade.");
@@ -48,4 +49,16 @@ public class APIExceptionHandler {
         body.put("timestamp", LocalDateTime.now());
         return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Object> handleRuntimeException(RuntimeException ex) {
+        String mensagem = "Ocorreu um erro inesperado: " + ex.getMessage();
+        Map<String, Object> body = new HashMap<>();
+        body.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
+        body.put("error", "Erro interno no servidor");
+        body.put("message", mensagem);
+        body.put("timestamp", LocalDateTime.now());
+        return new ResponseEntity<>(body, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
 }

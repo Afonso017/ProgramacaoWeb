@@ -12,10 +12,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderCreate;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderItemResponse;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderResponse;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderUpdate;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderUpdateItems;
 import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.OrderUpdateStatus;
+import br.edu.ufersa.pizzaria.Michelangelo.api.dto.OrderDTO.StatusResponse;
 import br.edu.ufersa.pizzaria.Michelangelo.domain.service.OrderService;
 import jakarta.validation.Valid;
 
@@ -66,5 +68,15 @@ public class OrderController {
   @GetMapping("/{id}")
   public ResponseEntity<OrderResponse> findById(@PathVariable Long id) {
     return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/status/{id}")
+  public ResponseEntity<StatusResponse> getOrderStatus(@PathVariable Long id) {
+    return new ResponseEntity<>(service.Status(id), HttpStatus.OK);
+  }
+
+  @GetMapping("/items/{id}")
+  public ResponseEntity<List<OrderItemResponse>> getOrderItems(@PathVariable Long id) {
+    return new ResponseEntity<>(service.getItemsByOrderId(id), HttpStatus.OK);
   }
 }

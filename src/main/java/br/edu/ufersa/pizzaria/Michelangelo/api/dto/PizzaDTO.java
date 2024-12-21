@@ -40,7 +40,6 @@ public class PizzaDTO {
           pizza.getImage());
     }
   }
-
   // DTO's Requests \/
 
   public record PizzaCreate(
