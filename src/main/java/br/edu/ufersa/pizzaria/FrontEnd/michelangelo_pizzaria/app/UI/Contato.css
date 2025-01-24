@@ -1,0 +1,14 @@
+.footer-social-b {
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+}
+
+.footer-social-b img {
+    transition: transform 0.2s ease-in-out;
+}
+
+.footer-social-b img:hover {
+    transform: scale(1.1);
+}

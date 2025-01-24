@@ -1,0 +1,16 @@
+import Image from "next/image";
+import "./PizzaImage.css";
+
+export default function PizzaImage() {
+    return (
+        <div className="container">
+            <Image
+                className="image"
+                src="/Pizzas.png"
+                alt="Michelangelo Pizzaria - Pizzas"
+                width={1664}
+                height={720}
+            />
+        </div>
+    );
+}

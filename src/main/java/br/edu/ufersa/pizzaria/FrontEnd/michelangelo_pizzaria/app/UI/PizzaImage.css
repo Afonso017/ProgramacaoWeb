@@ -1,0 +1,8 @@
+.container {
+    width: 100%; /* O container ocupa toda a largura da página */
+    height: auto; /* A altura será ajustada de acordo com o conteúdo */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente, caso necessário */
+    align-items: flex-start; /* Garante que o conteúdo fique no topo */
+    margin: 0;
+}
