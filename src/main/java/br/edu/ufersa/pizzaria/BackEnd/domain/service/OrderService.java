@@ -9,6 +9,7 @@ import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderResponse;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdateItems;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdateStatus;
+import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.StatusOrderResponse;
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Order;
 import br.edu.ufersa.pizzaria.BackEnd.domain.repository.OrderRepository;
 import utils.OrderStatus;
@@ -65,6 +66,10 @@ public class OrderService {
     repository.save(order);
 
     return new OrderResponse(order);
+  }
+
+  public StatusOrderResponse findStatus(Long id) {
+    return new StatusOrderResponse(repository.findOrderStatusById(id));
   }
 
   public OrderResponse update(Long id, OrderUpdate orderUpdate) {
