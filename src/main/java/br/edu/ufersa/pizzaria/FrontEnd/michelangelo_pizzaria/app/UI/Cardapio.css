@@ -94,10 +94,49 @@ button:active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #8f8f8f;
+    background-color: #d9d9d9;
     border-radius: 35px;
 }
 
 .precos {
     padding-top: 10px;
+}
+
+.adicionais-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background-color: #d9d9d9;
+    border-radius: 35px;
+    width: 70%;
+    margin-top: 20px;
+    border: 1px solid black;
+}
+
+.adicionais-container h4 {
+    text-decoration: underline;
+    color: black;
+    font-family: 'Raleway', Times, serif;
+}
+
+.adicionais {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    width: 100%;
+    margin-bottom: 2rem;
+}
+
+.adicional {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 4rem;
+}
+
+.adicional p {
+    margin: 0;
+    font-weight: 600;
+    font-family: 'Raleway', Times, serif;
 }

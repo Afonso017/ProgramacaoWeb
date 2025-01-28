@@ -32,7 +32,46 @@ const Cardapio = () => {
             precoG: "35,00",
             img: ""
         },
-    ]
+    ];
+
+    const adicionais = [
+        {
+            nome: "Ovo",
+            preco: "2,00"
+        },
+        {
+            nome: "Calabresa",
+            preco: "2,50"
+        },
+        {
+            nome: "Banana",
+            preco: "1,50"
+        },
+        {
+            nome: "Carne",
+            preco: "5,50"
+        },
+        {
+            nome: "Queijo",
+            preco: "5,00"
+        },
+        {
+            nome: "Bacon",
+            preco: "3,00"
+        },
+        {
+            nome: "Chocolate",
+            preco: "3,00"
+        },
+        {
+            nome: "Pepperoni",
+            preco: "1,75"
+        },
+        {
+            nome: "MM's",
+            preco: "2,00"
+        }
+    ];
 
     const [selected, setSelected] = useState(0);
 
@@ -61,8 +100,18 @@ const Cardapio = () => {
                     </button>
                 })}
             </div>
-            <div className="adicionais">
-                Tabela de Adicionais
+            <div className="adicionais-container">
+                <h4>Tabela de Adicionais</h4>
+                <div className="adicionais">
+                    {adicionais.map((adicional, index) => {
+                        return ( 
+                            <div key={index} className="adicional">
+                                <p>{adicional.nome}</p>
+                                <p>R${adicional.preco}</p>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </section>
     );
