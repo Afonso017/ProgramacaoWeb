@@ -3,14 +3,12 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 20px;
-    color: white;
+    padding: 20px 10px;
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     transition: transform 0.3s ease-in-out;
     z-index: 1000;
 }

@@ -1,12 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
 
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    margin-top: 7rem;
+    padding: 30px 20px 20px 20px;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
 nav ul {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    text-align: center;
     list-style: none;
-    margin: 20px 0 5px 0;
+    margin: 0;
     padding: 0;
 }
 
@@ -23,5 +36,18 @@ nav ul li a {
 }
 
 nav ul li a:hover {
+    cursor: pointer;
+}
+
+.carrinho {
+    position: fixed;
+    right: 0;
+    top: 0;
+    padding-right: 3em;
+    padding-top: 8.8rem;
+    z-index: 1000;
+}
+
+.carrinho img {
     cursor: pointer;
 }
