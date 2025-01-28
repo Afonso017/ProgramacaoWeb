@@ -60,6 +60,14 @@ public class OrderDTO {
     }
   }
 
+  public record StatusOrderResponse(
+      OrderStatus status) {
+
+    public StatusOrderResponse(OrderStatus status) {
+      this.status = status;
+    }
+  }
+
   // -----------------------------------------------------------------------------------
   // DTO's requests
 
