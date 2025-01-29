@@ -38,7 +38,6 @@
 .popup button {
   padding: 12px 20px;
   border: none;
-  background-color: #ff6347; /* Tom mais suave de vermelho */
   color: white;
   font-size: 1.1rem;
   border-radius: 5px;
@@ -48,8 +47,16 @@
   width: 100%;
 }
 
-.popup button:hover {
-  background-color: #e53e36; /* Cor um pouco mais forte no hover */
+.popup .finalizar {
+  background-color: #47b44c;
+}
+
+.popup .finalizar:hover {
+  background-color: #3a8d3e; /* Cor um pouco mais forte no hover */
+}
+
+.popup .remove-btn:hover {
+  background-color: #fd685b; /* Cor um pouco mais forte no hover */
 }
 
 /* Item do carrinho */
@@ -63,7 +70,7 @@
   font-size: 1rem;
 }
 
-/* Informações do item */
+/* info-pedidormações do item */
 .item-carrinho p {
   font-size: 1rem;
   color: #555;
@@ -81,15 +88,15 @@
   color: #ff5252;
   transition: color 0.3s ease;
   position: absolute; /* Posiciona o botão no canto direito */
-  right: 690px;
-  width: 25px; /* Definindo o tamanho fixo para o botão */
-  height: 25px; /* Definindo o tamanho fixo para o botão */
-  padding: 0; /* Removendo o padding excessivo */
+  right: 680px;
+  width: 50px; /* Definindo o tamanho fixo para o botão */
+  height: 45px; /* Definindo o tamanho fixo para o botão */
+  padding: 0px;
+  border-radius: 10px;
 }
 
-.item-carrinho .remove-btn:hover {
-  background-color: rgba(255, 82, 82, 0.3); /* Fundo mais forte ao passar o mouse */
-  color: #e53935; /* Mudando a cor do ícone no hover */
+.item-carrinho .remove-btn img{
+  padding: 0px 3px 0px 0px;
 }
 
 /* Detalhes do item */
@@ -106,25 +113,25 @@
   margin: 5px 0;
 }
 
-/* Informações de total e entrega */
-.popup .info {
+/* info-pedidormações de total e entrega */
+.popup .info-pedido {
   margin-top: 20px;
 }
 
-.popup .info p {
+.popup .info-pedido p {
   margin: 5px 0;
   font-size: 1.1rem;
   color: #333;
 }
 
-.popup .info strong {
+.popup .info-pedido strong {
   font-weight: 600;
   color: #f44336;
 }
 
 /* Botão "Continuar Pedido" */
 .popup .continue-button {
-  background-color: #4caf50;
+  background-color: #1E90FF;
   margin-top: 20px;
   width: 100%;
   padding: 12px 20px;
@@ -141,5 +148,13 @@
 }
 
 .popup .continue-button:hover:enabled {
-  background-color: #45a049;
+  background-color: #176dc4;
+}
+
+.divider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*Espaço entre os itens dentro da div*/
+  gap: 10px;
 }

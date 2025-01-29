@@ -2,6 +2,7 @@
 
 import "./Carrinho.css";
 import { useState } from "react";
+import Image from "next/image";
 
 const Carrinho = ({ togglePopup }) => {
   const [itens, setItens] = useState([
@@ -28,6 +29,10 @@ const Carrinho = ({ togglePopup }) => {
   ]);
   const [itemSelecionado, setItemSelecionado] = useState(null);
 
+  const AdicionarItem = (item) => {
+    setItens([...itens, item]);
+  }
+
   const taxaEntrega = 5.0; // Simulação de taxa de entrega fixa
   const totalPedido = itens.reduce((acc, item) => acc + item.preco, 0) + taxaEntrega;
 
@@ -40,9 +45,8 @@ const Carrinho = ({ togglePopup }) => {
   };
 
   const continuarPedido = () => {
-    // Lógica para continuar o pedido
     console.log("Continuando o pedido...");
-    togglePopup(); // Fechar o popup
+    togglePopup();
   };
 
   return (
@@ -64,7 +68,7 @@ const Carrinho = ({ togglePopup }) => {
                   <strong>{item.sabor1}</strong> ({item.tamanho}) - R$ {item.preco.toFixed(2)}
                 </p>
                 <button className="remove-btn" onClick={(e) => { e.stopPropagation(); removerItem(item.id); }}>
-                  🗑️
+                  <Image src="/ExcluirItem.png" alt="Remover item" width={40} height={40} />
                 </button>
               </div>
             ))}
@@ -79,17 +83,19 @@ const Carrinho = ({ togglePopup }) => {
               </div>
             )}
 
-            <div className="info">
+            <div className="info-pedido">
               <p><strong>Taxa de entrega:</strong> R$ {taxaEntrega.toFixed(2)}</p>
               <p><strong>Total:</strong> R$ {totalPedido.toFixed(2)}</p>
             </div>
           </div>
         )}
 
-        <button onClick={togglePopup}>Fechar</button>
-        <button className="continue-button" disabled={itens.length === 0} onClick={continuarPedido}>
-          Continuar Pedido
-        </button>
+        <div className="divider">
+          <button className="finalizar" onClick={() => {togglePopup();}}>Finalizar Pedido</button>
+          <button className="continue-button" disabled={itens.length === 0} onClick={continuarPedido}>
+            Continuar Pedindo
+          </button>
+        </div>
       </div>
     </div>
   );
