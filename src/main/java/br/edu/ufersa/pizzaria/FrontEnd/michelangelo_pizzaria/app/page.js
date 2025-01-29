@@ -3,7 +3,6 @@ import Footer from "./UI/Footer.js";
 import PizzaImage from "./UI/PizzaImage.js";
 import Cardapio from "./UI/Cardapio.js"
 import Infos from "./UI/Infos.js"
-import NavBar from "./UI/NavBar.js";
 
 export default function Home() {
     return (

@@ -4,7 +4,7 @@ import './Infos.css'
 
 const Infos = () => {
     return (
-        <div className='infos'>
+        <div id='infos' className='infos'>
             <hr />
             <div className='infos-div'>
                 <Contato />

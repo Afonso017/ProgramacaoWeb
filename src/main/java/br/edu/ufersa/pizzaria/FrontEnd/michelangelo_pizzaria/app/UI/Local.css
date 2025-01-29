@@ -1,0 +1,9 @@
+.local {
+    place-items: center;
+}
+
+.local p {
+    font-family: 'Raleway', Times, serif;
+    font-weight: bold;
+    margin: 10px auto;
+}
