@@ -1,0 +1,145 @@
+/* Overlay de fundo */
+.popup-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* Estilo do popup */
+.popup {
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  text-align: left;
+}
+
+/* Título */
+.popup h3 {
+  margin-bottom: 20px;
+  font-size: 1.8rem;
+  color: #333;
+  text-align: center;
+  font-weight: 600;
+}
+
+/* Estilo do botão "Fechar" */
+.popup button {
+  padding: 12px 20px;
+  border: none;
+  background-color: #ff6347; /* Tom mais suave de vermelho */
+  color: white;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+  width: 100%;
+}
+
+.popup button:hover {
+  background-color: #e53e36; /* Cor um pouco mais forte no hover */
+}
+
+/* Item do carrinho */
+.item-carrinho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  font-size: 1rem;
+}
+
+/* Informações do item */
+.item-carrinho p {
+  font-size: 1rem;
+  color: #555;
+  margin: 0;
+  flex-grow: 1;
+  text-align: left;
+}
+
+/* Estilo do botão de remover (ícone de lixeira) */
+.item-carrinho .remove-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #ff5252;
+  transition: color 0.3s ease;
+  position: absolute; /* Posiciona o botão no canto direito */
+  right: 690px;
+  width: 25px; /* Definindo o tamanho fixo para o botão */
+  height: 25px; /* Definindo o tamanho fixo para o botão */
+  padding: 0; /* Removendo o padding excessivo */
+}
+
+.item-carrinho .remove-btn:hover {
+  background-color: rgba(255, 82, 82, 0.3); /* Fundo mais forte ao passar o mouse */
+  color: #e53935; /* Mudando a cor do ícone no hover */
+}
+
+/* Detalhes do item */
+.item-detalhes {
+  padding: 15px;
+  margin-top: 10px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.item-detalhes p {
+  margin: 5px 0;
+}
+
+/* Informações de total e entrega */
+.popup .info {
+  margin-top: 20px;
+}
+
+.popup .info p {
+  margin: 5px 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.popup .info strong {
+  font-weight: 600;
+  color: #f44336;
+}
+
+/* Botão "Continuar Pedido" */
+.popup .continue-button {
+  background-color: #4caf50;
+  margin-top: 20px;
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1.1rem;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup .continue-button:disabled {
+  background-color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+.popup .continue-button:hover:enabled {
+  background-color: #45a049;
+}
