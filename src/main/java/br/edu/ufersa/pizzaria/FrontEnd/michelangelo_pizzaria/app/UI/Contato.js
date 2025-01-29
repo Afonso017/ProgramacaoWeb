@@ -23,13 +23,15 @@ const Contato = () => {
                 </div>
                 <div className="info">
                     <p>Horários de Funcionamento</p>
-                    <div className="sub-info">
-                        <p>Seg à Sexta</p>
-                        <p>Sáb e Dom</p>
-                    </div>
-                    <div className="sub-info">
-                        <p>18:00 às 21:00</p>
-                        <p>18:00 às 23:00</p>
+                    <div className="horarios">
+                        <div className="sub-info">
+                            <p>Seg à Sexta</p>
+                            <p>Sáb e Dom</p>
+                        </div>
+                        <div className="sub-info">
+                            <p>18:00 às 21:00</p>
+                            <p>18:00 às 23:00</p>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -9,8 +9,8 @@ const NavBar = () => {
     return (
         <nav>
             <ul>
-                <li><a>CARDÁPIO/PEDIDO</a></li>
-                <li><a>CONTATO/LOCAL</a></li>
+                <li><a href="#cardapio">CARDÁPIO/PEDIDO</a></li>
+                <li><a href="#infos">CONTATO/LOCAL</a></li>
             </ul>
             <div className="carrinho">
                 <Image src="/ShoppingCart.png" alt="Carrinho de compras" width={35} height={35} onClick={popupPedido} />

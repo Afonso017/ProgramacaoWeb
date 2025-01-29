@@ -6,19 +6,18 @@
 }
 
 .infos-div {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 85%;
+    display: grid;
+    grid-template-columns: 1fr 0.25fr 1fr;
+    width: 80%;
+    height: 100%;
 }
 
 hr.vertical-line {
-    position: relative;
-    left: 12%;
-    box-shadow: none;
     border: 1px solid #818181;
-}
-
-.vertical-line {
     transform: rotate(90deg);
+    margin: auto;
+    padding: 0;
+    width: 400%;
+    position: relative;
+    right: 140%;
 }
