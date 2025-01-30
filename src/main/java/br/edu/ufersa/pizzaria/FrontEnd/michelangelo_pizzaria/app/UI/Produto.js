@@ -2,10 +2,11 @@ import { useState, useEffect, useMemo } from 'react';
 import Cookies from "js-cookie";
 import './Produto.css';
 
-export default function Produto({ togglePopup, produto, adicionais }) {
+export default function Produto({ togglePopup, produto, adicionais, pizzas }) {
     const [selectedAdicionais, setSelectedAdicionais] = useState([]);
     const [selectedTamanho, setSelectedTamanho] = useState(produto.tipo === "bebida" ? "500ml" : "pequena");
     const [selectedBorda, setSelectedBorda] = useState("Sem borda");
+    const [selectedSabores, setSelectedSabores] = useState([]);
     const [valor, setValor] = useState(produto.precoP || produto.preco500ml);
 
     const bordas = useMemo(() => [
@@ -24,6 +25,17 @@ export default function Produto({ togglePopup, produto, adicionais }) {
 
     const handleTamanhoChange = (event) => {
         setSelectedTamanho(event.target.value);
+    };
+
+    const handleSaboresChange = (saborNome) => {
+        setSelectedSabores((prev) => {
+            if (prev.includes(saborNome)) {
+                return prev.filter((sabor) => sabor !== saborNome);
+            } else if (prev.length < 2) {
+                return [...prev, saborNome];
+            }
+            return prev;
+        });
     };
 
     const handleBordaChange = (bordaNome) => {
@@ -64,12 +76,17 @@ export default function Produto({ togglePopup, produto, adicionais }) {
     }, [selectedTamanho, selectedBorda, selectedAdicionais, produto, adicionais, bordas, precosTamanhos]);    
 
     const adicionarProduto = () => {
+        if (produto.sabor === "2 Sabores" && selectedSabores.length === 0) {
+            alert("Selecione pelo menos um sabor!");
+            return;
+        }
+
         const pedido = {
             id: Date.now(),
-            nome: produto.nome,
+            nome: produto.tipo,
             preco: valor,
-            sabor1: produto.sabor1 || produto.sabor,
-            sabor2: produto.sabor2 || null,
+            sabor1: selectedSabores[0] || produto.sabor,
+            sabor2: selectedSabores[1] || null,
             borda: selectedBorda !== "Sem borda" ? selectedBorda : null,
             adicionais: selectedAdicionais,
             tamanho: selectedTamanho,
@@ -83,8 +100,8 @@ export default function Produto({ togglePopup, produto, adicionais }) {
     
         // Salva o carrinho atualizado nos cookies
         Cookies.set("carrinho", JSON.stringify(carrinhoAtual), { expires: 7 }); // Expira em 7 dias
-    
-        alert("Produto adicionado ao carrinho!");
+
+        togglePopup();
     };
 
     return (
@@ -98,6 +115,8 @@ export default function Produto({ togglePopup, produto, adicionais }) {
                         : "Refrigerante "}
                     {produto.sabor}
                 </h2>
+
+                {/* Tamanho */}
                 <div className="produto">
                     <h4 id="tamanho-h4">Escolha o tamanho:</h4>
                     <div className="produto-container">
@@ -140,24 +159,51 @@ export default function Produto({ togglePopup, produto, adicionais }) {
 
                     {produto.tipo === "pizza" && (
                         <div>
-                            <h4 id="tamanho-h4-borda">Escolha a borda:</h4>
-                            <div className="bordas">
-                                {bordas.map((borda, index) => (
-                                    <div key={index} className="borda" onClick={() => handleBordaChange(borda.nome)}>
-                                        <label htmlFor={`borda-${borda.nome}`}>
-                                            {borda.nome} <br />R$ {formatPreco(borda.preco)}
-                                        </label>
-                                        <input
-                                            type="radio"
-                                            name="borda"
-                                            id={`borda-${borda.nome}`}
-                                            value={borda.nome}
-                                            checked={selectedBorda === borda.nome}
-                                            onChange={() => handleBordaChange(borda.nome)}
-                                        />
-                                    </div>
-                                ))}
+                            {/* Se for pizza de 2 sabores */}
+                            {produto.sabor === "2 Sabores" && (
+                                <div className="sabores">
+                                    <h4 id="tamanho-h4-borda">Escolha os sabores:</h4>
+                                    {pizzas.filter((pizza) => pizza.sabor !== "2 Sabores").map((pizza, index) => (
+                                        <div key={index} className="borda">
+                                            <label htmlFor={`sabor-${pizza.sabor}`}>
+                                                {pizza.sabor}
+                                            </label>
+                                            <input
+                                                type="checkbox"
+                                                name="sabor"
+                                                id={`sabor-${pizza.sabor}`}
+                                                value={pizza.sabor}
+                                                checked={selectedSabores.includes(pizza.sabor)}
+                                                onChange={() => handleSaboresChange(pizza.sabor)}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+
+                            {/* Borda */}
+                            <div>
+                                <h4 id="tamanho-h4-borda">Escolha a borda:</h4>
+                                <div className="bordas">
+                                    {bordas.map((borda, index) => (
+                                        <div key={index} className="borda" onClick={() => handleBordaChange(borda.nome)}>
+                                            <label htmlFor={`borda-${borda.nome}`}>
+                                                {borda.nome} <br />R$ {formatPreco(borda.preco)}
+                                            </label>
+                                            <input
+                                                type="radio"
+                                                name="borda"
+                                                id={`borda-${borda.nome}`}
+                                                value={borda.nome}
+                                                checked={selectedBorda === borda.nome}
+                                                onChange={() => handleBordaChange(borda.nome)}
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
+
+                            {/* Adicionais */}
                             <div>
                                 <h4 id="adicionais-h4">Adicionais</h4>
                                 <p id="selecao-adicionais-p">Selecione até 3</p>

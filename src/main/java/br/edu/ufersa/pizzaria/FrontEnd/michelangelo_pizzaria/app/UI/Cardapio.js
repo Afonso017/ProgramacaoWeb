@@ -76,7 +76,7 @@ const Cardapio = () => {
             precoP: 19.20,
             precoM: 27.90,
             precoG: 35.00,
-            img: "/pizzas/pizza-camarao.webp"
+            img: "/pizzas/pizza-camarao.jpg"
         },
         {
             tipo: "pizza",
@@ -239,7 +239,7 @@ const Cardapio = () => {
                 </div>
             </div>
             {isPopupVisible && (
-                <Produto togglePopup={togglePopup} produto={selectedProduct} adicionais={adicionais} />
+                <Produto togglePopup={togglePopup} produto={selectedProduct} adicionais={adicionais} pizzas={pizzas} />
             )}
         </section>
     );
