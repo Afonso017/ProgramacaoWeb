@@ -1,10 +1,10 @@
 /* Overlay de fundo */
 .popup-overlay {
-  position: absolute;
-  top: 0;
+  position: fixed;
+  top: -25vh;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  height: 145vh;
   display: flex;
   justify-content: center;
   align-items: center;
