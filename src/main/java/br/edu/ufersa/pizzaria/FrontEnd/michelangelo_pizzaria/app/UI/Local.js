@@ -9,20 +9,20 @@ const Marker = dynamic(() => import('react-leaflet').then(mod => mod.Marker), { 
 const Popup = dynamic(() => import('react-leaflet').then(mod => mod.Popup), { ssr: false });
 
 const Local = () => {
-    const position = [-29.682, -51.134];
+    const position = [-5.1696907, -37.3561109];
 
     return (
         <div className='localContainer'>
             <h1>LOCAL</h1>
-            <p>Rua Firmino de Souza - 550 Laffayete, RS</p>
-            <MapContainer center={[-29.682, -51.134]} zoom={13} scrollWheelZoom={false}>
+            <p>Av. Abel Coelho, 906 - Abolição III, Mossoró - RN, 59612-300</p>
+            <MapContainer center={[-5.1696907, -37.3561109]} zoom={13} scrollWheelZoom={false}>
                 <TileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 />
-                <Marker position={[-29.682, -51.134]}>
+                <Marker position={[-5.1696907, -37.3561109]}>
                     <Popup>
-                    A pretty CSS3 popup. <br /> Easily customizable.
+                        Av. Abel Coelho, 906 - Abolição III, Mossoró - RN, 59612-300
                     </Popup>
                 </Marker>
             </MapContainer>
