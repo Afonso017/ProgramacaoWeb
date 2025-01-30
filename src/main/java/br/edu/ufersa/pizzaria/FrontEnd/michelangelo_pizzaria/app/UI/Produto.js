@@ -232,7 +232,7 @@ export default function Produto({ togglePopup, produto, adicionais, pizzas }) {
                         <button id="cancelar-produto" onClick={togglePopup}>
                             Cancelar
                         </button>
-                        <button id="adicionar-btn" onClick={() =>{adicionarProduto(); togglePopup();}}>
+                        <button id="adicionar-btn" onClick={adicionarProduto}>
                             Adicionar <span>R$ {formatPreco(valor)}</span>
                         </button>
                     </div>
