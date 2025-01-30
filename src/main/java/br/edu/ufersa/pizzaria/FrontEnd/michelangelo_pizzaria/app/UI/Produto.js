@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import Cookies from "js-cookie";
 import './Produto.css';
 
 export default function Produto({ togglePopup, produto, adicionais }) {
@@ -7,19 +8,19 @@ export default function Produto({ togglePopup, produto, adicionais }) {
     const [selectedBorda, setSelectedBorda] = useState("Sem borda");
     const [valor, setValor] = useState(produto.precoP || produto.preco500ml);
 
-    const bordas = [
+    const bordas = useMemo(() => [
         { nome: "Sem borda", preco: 0.0 },
         { nome: "Catupiry", preco: 6.0 },
         { nome: "Cheddar", preco: 8.0 },
         { nome: "Chocolate", preco: 5.0 },
         { nome: "Requeijão", preco: 5.0 }
-    ];
+    ], []);
 
-    const precosTamanhos = {
+    const precosTamanhos = useMemo(() => ({
         pequena: produto.precoP || produto.preco500ml,
         media: produto.precoM || produto.preco1L,
         grande: produto.precoG || produto.preco2L
-    };
+    }), [produto]);
 
     const handleTamanhoChange = (event) => {
         setSelectedTamanho(event.target.value);
@@ -46,7 +47,7 @@ export default function Produto({ togglePopup, produto, adicionais }) {
         let precoTamanho = 0.0;
         let precoBorda = 0.0;
         let precoAdicionais = 0.0;
-        
+    
         if (produto.tipo === "pizza") {
             precoTamanho = precosTamanhos[selectedTamanho];
             precoBorda = Number(bordas.find((borda) => borda.nome === selectedBorda)?.preco) || 0.0;
@@ -60,9 +61,29 @@ export default function Produto({ togglePopup, produto, adicionais }) {
         }, 0);
     
         setValor(precoTamanho + precoBorda + precoAdicionais);
-    }, [selectedTamanho, selectedBorda, selectedAdicionais, produto]);
+    }, [selectedTamanho, selectedBorda, selectedAdicionais, produto, adicionais, bordas, precosTamanhos]);    
 
     const adicionarProduto = () => {
+        const pedido = {
+            id: Date.now(),
+            nome: produto.nome,
+            preco: valor,
+            sabor1: produto.sabor1 || produto.sabor,
+            sabor2: produto.sabor2 || null,
+            borda: selectedBorda !== "Sem borda" ? selectedBorda : null,
+            adicionais: selectedAdicionais,
+            tamanho: selectedTamanho,
+        };
+    
+        // Obtém o carrinho existente dos cookies (ou cria um novo array)
+        const carrinhoAtual = JSON.parse(Cookies.get("carrinho") || "[]");
+    
+        // Adiciona o novo pedido ao carrinho
+        carrinhoAtual.push(pedido);
+    
+        // Salva o carrinho atualizado nos cookies
+        Cookies.set("carrinho", JSON.stringify(carrinhoAtual), { expires: 7 }); // Expira em 7 dias
+    
         alert("Produto adicionado ao carrinho!");
     };
 

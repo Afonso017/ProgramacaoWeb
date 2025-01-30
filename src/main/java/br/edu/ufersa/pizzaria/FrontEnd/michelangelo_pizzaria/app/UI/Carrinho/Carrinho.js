@@ -1,44 +1,29 @@
 "use client";
 
 import "./Carrinho.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
+import Cookies from "js-cookie";
 
 const Carrinho = ({ togglePopup }) => {
-  const [itens, setItens] = useState([
-    {
-      id: 1,
-      nome: "Pizza Margherita",
-      preco: 30.0,
-      sabor1: "Margherita",
-      sabor2: null,
-      borda: "Cheddar",
-      adicionais: ["Bacon", "Catupiry"],
-      tamanho: "Grande",
-    },
-    {
-      id: 2,
-      nome: "Pizza Portuguesa",
-      preco: 35.0,
-      sabor1: "Portuguesa",
-      sabor2: null,
-      borda: null,
-      adicionais: [],
-      tamanho: "Média",
-    },
-  ]);
-  const [itemSelecionado, setItemSelecionado] = useState(null);
+    const [itens, setItens] = useState([]);
 
-  const AdicionarItem = (item) => {
-    setItens([...itens, item]);
-  }
+  useEffect(() => {
+      const carrinhoSalvo = JSON.parse(Cookies.get("carrinho") || "[]");
+      setItens(carrinhoSalvo);
+  }, []);
+
+  const [itemSelecionado, setItemSelecionado] = useState(null);
 
   const taxaEntrega = 5.0; // Simulação de taxa de entrega fixa
   const totalPedido = itens.reduce((acc, item) => acc + item.preco, 0) + taxaEntrega;
 
   const removerItem = (id) => {
-    setItens(itens.filter((item) => item.id !== id));
+    const novoCarrinho = itens.filter((item) => item.id !== id);
+    setItens(novoCarrinho);
+    Cookies.set("carrinho", JSON.stringify(novoCarrinho), { expires: 7 });
   };
+
 
   const selecionarItem = (item) => {
     setItemSelecionado(item);
