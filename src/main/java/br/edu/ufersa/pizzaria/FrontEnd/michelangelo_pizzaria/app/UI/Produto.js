@@ -83,8 +83,6 @@ export default function Produto({ togglePopup, produto, adicionais }) {
     
         // Salva o carrinho atualizado nos cookies
         Cookies.set("carrinho", JSON.stringify(carrinhoAtual), { expires: 7 }); // Expira em 7 dias
-    
-        alert("Produto adicionado ao carrinho!");
     };
 
     return (
@@ -186,7 +184,7 @@ export default function Produto({ togglePopup, produto, adicionais }) {
                         <button id="cancelar-produto" onClick={togglePopup}>
                             Cancelar
                         </button>
-                        <button id="adicionar-btn" onClick={adicionarProduto}>
+                        <button id="adicionar-btn" onClick={() =>{adicionarProduto(); togglePopup();}}>
                             Adicionar <span>R$ {formatPreco(valor)}</span>
                         </button>
                     </div>

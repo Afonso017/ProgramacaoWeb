@@ -12,13 +12,15 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "axios": "^1.7.9",
     "js-cookie": "^3.0.5",
+    "leaflet": "^1.9.4",
     "next": "15.1.4",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "19.0.0-rc.1",
+    "react-dom": "19.0.0-rc.1",
+    "react-leaflet": "5.0.0-rc.2"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "eslint": "^9",
+    "@eslint/eslintrc": "^3.2.0",
+    "eslint": "^9.19.0",
     "eslint-config-next": "15.1.4"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
