@@ -50,7 +50,7 @@ const Carrinho = ({ togglePopup }) => {
                 onClick={() => selecionarItem(item)}
               >
                 <p>
-                  <strong>{item.sabor1}</strong> ({item.tamanho}) - R$ {item.preco.toFixed(2)}
+                  <strong>{item.sabor1}{item.sabor2 && " e " + item.sabor2}</strong> ({item.tamanho}) - R$ {item.preco.toFixed(2)}
                 </p>
                 <button className="remove-btn" onClick={(e) => { e.stopPropagation(); removerItem(item.id); }}>
                   <Image src="/ExcluirItem.png" alt="Remover item" width={40} height={40} />
@@ -60,7 +60,7 @@ const Carrinho = ({ togglePopup }) => {
 
             {itemSelecionado && (
               <div className="item-detalhes">
-                <p><strong>Nome:</strong> {itemSelecionado.nome}</p>
+                <p><strong>Item:</strong> {itemSelecionado.nome}</p>
                 <p><strong>Sabor:</strong> {itemSelecionado.sabor1} {itemSelecionado.sabor2 && `e ${itemSelecionado.sabor2}`}</p>
                 <p><strong>Tamanho:</strong> {itemSelecionado.tamanho}</p>
                 {itemSelecionado.borda && <p><strong>Borda:</strong> {itemSelecionado.borda}</p>}

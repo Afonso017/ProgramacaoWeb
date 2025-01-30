@@ -114,3 +114,8 @@
 #adicionar-btn:hover {
     background-color: #2d6f30;
 }
+
+.sabores {
+    display: grid;
+    gap: 10px;
+}
