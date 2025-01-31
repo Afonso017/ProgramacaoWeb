@@ -43,7 +43,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private OrderStatus status = OrderStatus.PENDING;
 
-    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<OrderItem> items = new ArrayList<>();
 
     @Column(precision = 10, scale = 2, nullable = false)
@@ -52,19 +52,17 @@ public class Order {
     public Order() {
     }
 
-    public Order(Long id, Client client, LocalDateTime orderDate, OrderStatus status, List<OrderItem> items,
+    public Order(Long id, Client client, OrderStatus status, List<OrderItem> items,
             BigDecimal totalAmount) {
         this.client = client;
-        this.orderDate = orderDate;
         this.status = status;
         this.items = items;
         this.totalAmount = totalAmount;
     }
 
-    public Order(Client client, LocalDateTime orderDate, OrderStatus status, List<OrderItem> items,
+    public Order(Client client, OrderStatus status, List<OrderItem> items,
             BigDecimal totalAmount) {
         this.client = client;
-        this.orderDate = orderDate;
         this.status = status;
         this.items = items;
         this.totalAmount = totalAmount;
@@ -162,14 +160,6 @@ public class Order {
         this.totalAmount = totalAmount;
     }
 
-    public void setOrder(OrderCreate orderCreate) {
-        this.client = orderCreate.clientId();
-        this.orderDate = orderCreate.orderDate();
-        this.status = OrderStatus.PENDING;
-        this.totalAmount = orderCreate.totalAmount();
-        this.setItems(orderCreate.items().stream().map(OrderItemCreate::toEntity).collect(Collectors.toList()));
-    }
-
     public void setOrder(OrderUpdate orderUpdate) {
         this.client = orderUpdate.clientId();
         this.orderDate = orderUpdate.orderDate();
@@ -180,12 +170,15 @@ public class Order {
 
     public void addItem(OrderItem item) {
         items.add(item);
-        item.setOrder(this); // Define a referência inversa
     }
 
     public void removeItem(OrderItem item) {
         items.remove(item);
-        item.setOrder(null); // Remove a referência inversa
+    }
+
+    @Override
+    public String toString() {
+        return "Order [id=" + id + ", client=" + client + ", orderDate=" + orderDate + ", status=" + status + ", items=" + items + ", totalAmount=" + totalAmount + "]";
     }
 
 }

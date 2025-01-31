@@ -32,6 +32,10 @@ public class Additional {
   public Additional() {
   }
 
+  public Additional(Long id) {
+    this.id = id;
+  }
+
   public Additional(String name, String description, BigDecimal price, String image) {
     this.name = name;
     this.description = description;

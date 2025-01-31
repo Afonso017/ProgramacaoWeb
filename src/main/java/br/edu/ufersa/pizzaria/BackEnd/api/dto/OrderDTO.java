@@ -23,23 +23,16 @@ public class OrderDTO {
 
   public record OrderItemResponse(
       ProductResponse productId,
-      Long orderId,
-      Integer quantity,
-      BigDecimal price) {
+      Integer quantity) {
 
     public OrderItemResponse(OrderItem orderItem) {
       this(
           new ProductResponse(orderItem.getProduct()),
-          orderItem.getOrder().getId(),
-          orderItem.getQuantity(),
-          orderItem.getPrice());
+          orderItem.getQuantity());
     }
 
     public OrderItem toEntity() {
-      Order order = new Order();
-      order.setId(orderId);
-
-      return new OrderItem(productId.toEntity(), order, quantity, price);
+      return new OrderItem(productId.toEntity(), quantity);
     }
   }
 
@@ -73,31 +66,14 @@ public class OrderDTO {
 
   // DTO para criação de um item do pedido, esperando os objetos completos
   public record OrderItemCreate(
-      @NotNull ProductCreate productId,
-      @Positive Integer quantity,
-      @Positive BigDecimal price) {
-
-    public OrderItem toEntity() {
-      return new OrderItem(productId.toEntity(), quantity, price);
-    }
+      @NotNull Long productId,
+      @Positive Integer quantity) {
   }
 
   public record OrderCreate(
-      @NotNull Client clientId,
-      @NotNull @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss") LocalDateTime orderDate,
+      @NotNull Long clientId,
       @NotNull @Size(min = 1) List<OrderItemCreate> items,
       @NotNull @Positive BigDecimal totalAmount) {
-
-    public Order toEntity() {
-      Order order = new Order(clientId, orderDate, OrderStatus.PENDING,
-          items.stream().map(OrderItemCreate::toEntity).collect(Collectors.toList()), totalAmount);
-
-      for (OrderItem item : order.getItems()) {
-        item.setOrder(order);
-      }
-
-      return order;
-    }
   }
 
   public record OrderItemUpdate(
@@ -121,14 +97,8 @@ public class OrderDTO {
       @NotNull @Positive BigDecimal totalAmount) {
 
     public Order toEntity() {
-      Order order = new Order(id, clientId, orderDate, status,
+      return new Order(clientId, status,
           items.stream().map(OrderItemUpdate::toEntity).collect(Collectors.toList()), totalAmount);
-
-      for (OrderItem item : order.getItems()) {
-        item.setOrder(order);
-      }
-
-      return order;
     }
   }
 

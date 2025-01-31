@@ -60,4 +60,8 @@ public class AdditionalService {
 
     return new AdditionalResponse(additional);
   }
+
+  public List<Additional> findAllById(List<Long> additionals) {
+    return repository.findAllById(additionals);
+  }
 }

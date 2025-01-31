@@ -3,10 +3,13 @@ package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorCreate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorUpdate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.PriceDTO.PriceCreate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.PriceDTO.PriceUpdate;
+import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorResponse;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -37,6 +40,10 @@ public class Flavor {
   private List<PriceEntry> price = new ArrayList<>();
 
   public Flavor() {
+  }
+
+  public Flavor(Long id) {
+    this.id = id;
   }
 
   public Flavor(String name, String description, List<PriceEntry> priceEntries) {
@@ -138,5 +145,9 @@ public class Flavor {
     this.setDescription(flavorUpdate.description());
     this.setPrice(
         flavorUpdate.price().stream().map(PriceUpdate::toEntity).collect(java.util.stream.Collectors.toList()));
+  }
+
+  public FlavorResponse toResponse() {
+    return new FlavorResponse(this);
   }
 }

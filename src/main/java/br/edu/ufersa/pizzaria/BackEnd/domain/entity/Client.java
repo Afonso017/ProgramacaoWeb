@@ -27,6 +27,11 @@ public abstract class Client extends User {
         this.phone = phone;
     }
 
+    public Client(Long id, String email, String password, String phone) {
+        super(id, email, password);
+        this.phone = phone;
+    }
+
     /**
      * @return String return the phone
      */

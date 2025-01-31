@@ -31,12 +31,14 @@ public class ClientDTO {
   }
 
   public record ClientDeliveryResponse(
+      Long id,
       String email,
       String phone,
       String address) {
 
     public ClientDeliveryResponse(ClientDelivery client) {
       this(
+          client.getId(),
           client.getEmail(),
           client.getPhone(),
           client.getAddress());
@@ -44,13 +46,14 @@ public class ClientDTO {
   }
 
   public record ClientLocalCreate(
+      Long id,
       String email,
       String password,
       String phone,
       @PositiveOrZero int clientTable) {
 
     public Client toEntity() {
-      return new ClientLocal(email, password, phone, clientTable);
+      return new ClientLocal(id, email, password, phone, clientTable);
     }
   }
 

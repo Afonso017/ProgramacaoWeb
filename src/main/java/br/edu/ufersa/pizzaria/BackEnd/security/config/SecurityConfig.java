@@ -30,6 +30,11 @@ public class SecurityConfig {
         "/api/v1/additional",
         "/api/v1/border",
         "/api/v1/flavor",
+        "/api/v1/pizza",
+        "/api/v1/order",
+        "/api/v1/client/delivery",
+        "/api/v1/client/local",
+        "/api/v1/client/retirement"
     };
 
     public static final String [] REQUIRED = {

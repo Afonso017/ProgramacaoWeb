@@ -89,12 +89,6 @@ const Cardapio = () => {
         },
     ];
 
-    useEffect(() => {
-        axios.get("/api/v1/additional")
-            .then((res) => console.log(res.data))
-            .catch((err) => console.error("Erro ao buscar dados:", err));
-    }, []);
-
     const bebidas = [
         {
             tipo: "bebida",

@@ -2,6 +2,10 @@ package br.edu.ufersa.pizzaria.BackEnd.domain.service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Pizza;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.BorderRepository;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.FlavorRepository;
 import org.springframework.stereotype.Service;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.PizzaDTO.PizzaCreate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.PizzaDTO.PizzaResponse;
@@ -11,9 +15,15 @@ import br.edu.ufersa.pizzaria.BackEnd.domain.repository.PizzaRepository;
 public class PizzaService {
 
   private final PizzaRepository repository;
+  private final AdditionalService additionalService;
+  private final FlavorRepository flavorRepository;
+  private final BorderRepository borderRepository;
 
-  public PizzaService(PizzaRepository repository) {
+  public PizzaService(PizzaRepository repository, AdditionalService additionalService, FlavorRepository flavorRepository, BorderRepository borderRepository) {
     this.repository = repository;
+    this.additionalService = additionalService;
+    this.flavorRepository = flavorRepository;
+    this.borderRepository = borderRepository;
   }
 
   public List<PizzaResponse> listAll() {
@@ -29,7 +39,7 @@ public class PizzaService {
       throw new IllegalArgumentException("Já existe uma pizza com o nome informado");
     }
 
-    var pizza = repository.save(pizzaCreate.toEntity());
+    var pizza = repository.save(toEntity(pizzaCreate));
 
     return new PizzaResponse(pizza);
   }
@@ -56,5 +66,14 @@ public class PizzaService {
         .orElseThrow(() -> new IllegalArgumentException("Pizza não encontrada"));
 
     return new PizzaResponse(pizza);
+  }
+
+  public Pizza toEntity(PizzaCreate pizzaCreate) {
+    var flavorOneObj = flavorRepository.findById(pizzaCreate.flavorOne()).orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
+    var flavorTwoObj = flavorRepository.findById(pizzaCreate.flavorTwo()).orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
+    var borderObj = borderRepository.findById(pizzaCreate.border()).orElseThrow(() -> new IllegalArgumentException("Borda não encontrada"));
+    var aditionalsList = additionalService.findAllById(pizzaCreate.aditionals());
+    return new Pizza(pizzaCreate.name(), pizzaCreate.description(), pizzaCreate.price(), pizzaCreate.image(),
+        flavorOneObj, flavorTwoObj, borderObj, aditionalsList, pizzaCreate.size());
   }
 }

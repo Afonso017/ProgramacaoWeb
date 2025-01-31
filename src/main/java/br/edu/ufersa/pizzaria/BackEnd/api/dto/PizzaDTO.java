@@ -2,25 +2,31 @@ package br.edu.ufersa.pizzaria.BackEnd.api.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
+
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Additional;
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Border;
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Flavor;
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Pizza;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.BorderRepository;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.FlavorRepository;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.AdditionalRepository;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PositiveOrZero;
 import utils.PizzaSizes;
+import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorResponse;
 
 public class PizzaDTO {
-  public record PizzaResponse(
+
+    public record PizzaResponse(
       Long id,
       String name,
       String description,
       double price,
-      Flavor flavorOne,
-      Flavor flavorTwo,
+      FlavorResponse flavorOne,
+      FlavorResponse flavorTwo,
       Border border,
       List<Additional> aditionals,
       PizzaSizes size,
@@ -32,8 +38,8 @@ public class PizzaDTO {
           pizza.getName(),
           pizza.getDescription(),
           pizza.getPrice().doubleValue(),
-          pizza.getFlavorOne(),
-          pizza.getFlavorTwo(),
+          pizza.getFlavorOne().toResponse(),
+          pizza.getFlavorTwo().toResponse(),
           pizza.getBorder(),
           pizza.getAditionals(),
           pizza.getSize(),
@@ -47,15 +53,10 @@ public class PizzaDTO {
       @NotBlank String name,
       @NotBlank String description,
       @PositiveOrZero BigDecimal price,
-      @NotNull Flavor flavorOne,
-      Flavor flavorTwo,
-      Border border,
-      List<Additional> aditionals,
+      @NotNull Long flavorOne,
+      Long flavorTwo,
+      Long border,
+      List<Long> aditionals,
       @NotNull @Enumerated(EnumType.STRING) PizzaSizes size,
-      String image) {
-
-    public Pizza toEntity() {
-      return new Pizza(name, description, price, image, flavorOne, flavorTwo, border, aditionals, size);
-    }
-  }
+      String image) { }
 }

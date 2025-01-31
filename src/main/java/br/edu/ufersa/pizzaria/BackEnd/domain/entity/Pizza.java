@@ -55,10 +55,10 @@ public class Pizza extends Product {
         this.setName(pizza.name());
         this.setDescription(pizza.description());
         this.setImage(pizza.image());
-        this.setFlavorOne(pizza.flavorOne());
-        this.setFlavorTwo(pizza.flavorTwo());
-        this.setBorder(pizza.border());
-        this.setAditionals(pizza.aditionals());
+        this.setFlavorOne(new Flavor(pizza.flavorOne()));
+        this.setFlavorTwo(new Flavor(pizza.flavorTwo()));
+        this.setBorder(new Border(pizza.border()));
+        this.setAditionals(pizza.aditionals().stream().map(Additional::new).toList());
         this.setSize(pizza.size());
         this.setPrice(this.getPrice());
     }

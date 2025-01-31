@@ -1,7 +1,13 @@
 package br.edu.ufersa.pizzaria.BackEnd.domain.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import br.edu.ufersa.pizzaria.BackEnd.domain.entity.OrderItem;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ClientRepository;
+import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderCreate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderItemUpdate;
@@ -18,21 +24,27 @@ import utils.OrderStatus;
 public class OrderService {
 
   private final OrderRepository repository;
+  private final ClientRepository clientRepository;
+  private final ProductRepository productRepository;
 
-  public OrderService(OrderRepository repository) {
+  public OrderService(OrderRepository repository, ClientRepository clientRepository, ProductRepository productRepository) {
     this.repository = repository;
+    this.clientRepository = clientRepository;
+    this.productRepository = productRepository;
   }
 
   public List<OrderResponse> findAll() {
-    List<OrderResponse> orders = repository.findAllWithItems()
-        .stream().map(order -> new OrderResponse(order))
-        .collect(Collectors.toList());
-
-    return orders;
+      return repository.findAll().stream().map(OrderResponse::new).collect(Collectors.toList());
   }
 
   public OrderResponse save(OrderCreate orderCreate) {
-    Order newOrder = repository.save(orderCreate.toEntity());
+    LocalDateTime orderDate = LocalDateTime.now();
+    Order newOrder = toEntity(orderCreate);
+    newOrder.setOrderDate(orderDate);
+
+    System.out.println("Ordem: " + newOrder.toString());
+
+    repository.save(newOrder);
 
     return new OrderResponse(newOrder);
   }
@@ -100,5 +112,16 @@ public class OrderService {
         .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
 
     return new OrderResponse(order);
+  }
+
+  public Order toEntity(OrderCreate orderCreate) {
+    var client = clientRepository.findById(orderCreate.clientId())
+        .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+    var orderItems = orderCreate.items().stream().map(orderItemCreate -> {
+        var product = productRepository.findById(orderItemCreate.productId())
+            .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
+        return new OrderItem(product, orderItemCreate.quantity(), product.getPrice());
+    }).toList();
+    return new Order(client, OrderStatus.PENDING, orderItems, orderCreate.totalAmount());
   }
 }

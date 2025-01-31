@@ -24,10 +24,10 @@ public class OrderItem {
   @JsonIgnore
   private Product product;
 
-  @ManyToOne
-  @JoinColumn(name = "order_id", nullable = false)
-  @JsonIgnore
-  private Order order;
+//  @ManyToOne
+//  @JoinColumn(name = "order_id", nullable = false)
+//  @JsonIgnore
+//  private Order order;
 
   @Positive(message = "A quantidade deve ser maior que zero")
   private int quantity;
@@ -42,7 +42,6 @@ public class OrderItem {
   public OrderItem(Long id, Product product, Order order, int quantity, BigDecimal price) {
     this.id = id;
     this.product = product;
-    this.order = order;
     this.quantity = quantity;
     this.price = price;
   }
@@ -55,9 +54,13 @@ public class OrderItem {
 
   public OrderItem(Product product, Order order, int quantity, BigDecimal price) {
     this.product = product;
-    this.order = order;
     this.quantity = quantity;
     this.price = price;
+  }
+
+  public OrderItem(Product entity, Integer quantity) {
+    this.product = entity;
+    this.quantity = quantity;
   }
 
   /**
@@ -79,27 +82,6 @@ public class OrderItem {
    */
   public Product getProduct() {
     return product;
-  }
-
-  /**
-   * @param Long the product to set
-   */
-  public void setProduct(Product product) {
-    this.product = product;
-  }
-
-  /**
-   * @return Order return the order
-   */
-  public Order getOrder() {
-    return order;
-  }
-
-  /**
-   * @param order the order to set
-   */
-  public void setOrder(Order order) {
-    this.order = order;
   }
 
   /**

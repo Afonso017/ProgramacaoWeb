@@ -27,6 +27,10 @@ public class Border {
   public Border() {
   }
 
+  public Border(Long id) {
+    this.id = id;
+  }
+
   public Border(String name, BigDecimal price) {
     this.name = name;
     this.price = price;
