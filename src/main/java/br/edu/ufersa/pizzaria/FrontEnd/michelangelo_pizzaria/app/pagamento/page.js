@@ -1,18 +1,21 @@
 "use client";
-import { useState } from "react";
+import { useRef, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"
+import Footer from "../UI/Footer";
 import axios from "axios";
 import "./page.css";
 
 const Pagamento = () => {
   const [opcaoEntrega, setOpcaoEntrega] = useState("retirada");
   const [opcaoPagamento, setOpcaoPagamento] = useState("Pix");
+  const [erro, setErro] = useState(false);
   const router = useRouter();
   const [cep, setCep] = useState(""); // Para armazenar o CEP digitado
   const [endereco, setEndereco] = useState(null); // Para armazenar os dados do endereço
   const [numeroCasa, setNumeroCasa] = useState(""); // Para armazenar o número da casa
   const [buscando, setBuscando] = useState(false); // Para controlar se a busca está em andamento
   const [erroCep, setErroCep] = useState(null); // Para armazenar erro ao buscar o CEP
+  const [randomNumber, setRandomNumber] = useState(null);
 
   // Função para buscar o endereço pelo CEP
   const buscarEndereco = async () => {
@@ -42,8 +45,61 @@ const Pagamento = () => {
     }
   };
 
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  
+  useEffect(() => {
+      const headerHeight = document.querySelector('.header').offsetHeight;
+      document.body.style.paddingTop = `${headerHeight}px`;
+
+      const handleScroll = () => {
+          const currentScrollY = window.scrollY;
+
+          if (currentScrollY > lastScrollY.current) {
+              setIsVisible(false);
+          } else {
+              setIsVisible(true);
+          }
+
+          lastScrollY.current = currentScrollY;
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+          document.body.style.paddingTop = '';
+          window.removeEventListener('scroll', handleScroll);
+      }
+  }, []);
+
+  //função de número aleatório de 3 digitos
+  useEffect(() => {
+    setRandomNumber(Math.floor(Math.random() * 900) + 100);
+  }, []);
+
+  // Fução para checar se o cliente passou os dados necessários de acordo com a opção de entrega
+  const checarDados = () => {
+    if (opcaoEntrega === "delivery") {
+      if (!endereco) {
+        alert("Informe o CEP para entrega!");
+        setErro(true);
+      } else if (!numeroCasa) {
+        alert("Informe o número da casa para entrega!");
+        setErro(true);
+      } else {
+        setErro(false);
+      }
+    }
+  }
+
   return (
-    <div className="resumo-pedido">
+    <div>
+      <header className={`header ${isVisible ? '' : 'hidden'}`}>
+            <div className="titles">
+                <h1>MICHELANGELO</h1>
+                <h2>Pizzaria</h2>
+            </div>
+      </header>
+      <div className="resumo-pedido">
       <h2>Resumo do Pedido</h2>
       <div className="pedido-box">
         <div className="item-pedido">
@@ -78,11 +134,11 @@ const Pagamento = () => {
         {opcaoEntrega === "retirada" && (
           <div className="retirada-info">
             <p>
-              <strong>Porreta Pizza</strong>
+              <strong>Código do Pedido: {randomNumber}</strong>
             </p>
-            <p>
-              Avenida Abel Coelho, 1600 - Vizinho ao sindicato dos bancários
-            </p>
+            <p><strong>Local de Retirada</strong></p>
+            <p>Porreta Pizza</p>
+            <p>Avenida Abel Coelho, 1600 - Vizinho ao sindicato dos bancários</p>
           </div>
         )}
 
@@ -142,10 +198,13 @@ const Pagamento = () => {
             <option value="Cartão de Débito">Cartão de Débito</option>
           </select>
         </div>
-        <button className="finalizar" onClick={() => router.push("/pagamento/finalizado")}>
+        <button className="finalizar" onClick={() => {checarDados(); 
+          if (!erro) {router.push("/pagamento/finalizado")}}}>
           Finalizar Pedido
         </button>
+        </div>
       </div>
+      <Footer/>
     </div>
   );
 };
