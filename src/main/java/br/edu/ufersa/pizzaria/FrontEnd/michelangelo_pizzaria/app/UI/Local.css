@@ -1,15 +1,17 @@
-.localContainer{
+.locCont{
+    display: flex;
+    flex-direction: column;
     place-items: center;
+}
+
+.locCont p {
+    font-family: 'Raleway', Times, serif;
+    font-weight: bold;
+    margin: 10px auto;
+    text-align: center;
 }
 
 .leaflet-container {
     height: 300px;
     width: 500px;
-}
-
-.localContainer p {
-    font-family: 'Raleway', Times, serif;
-    font-weight: bold;
-    margin: 10px auto;
-    text-align: center;
 }

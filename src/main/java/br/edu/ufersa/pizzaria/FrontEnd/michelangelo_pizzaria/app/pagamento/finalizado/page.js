@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
-import "./page.css";
+import { useRef, useEffect, useState } from "react";
+import Footer from "../../UI/Footer";
+import "./page.css"  
 
 const Finalizado = ({ orderId }) => {
   const [status, setStatus] = useState(null);
@@ -14,6 +15,32 @@ const Finalizado = ({ orderId }) => {
       console.error("Erro ao obter status:", error);
     }
   };
+
+  const [isVisible, setIsVisible] = useState(true);
+  const lastScrollY = useRef(0);
+  
+  useEffect(() => {
+      const headerHeight = document.querySelector('.header').offsetHeight;
+      document.body.style.paddingTop = `${headerHeight}px`;
+
+      const handleScroll = () => {
+          const currentScrollY = window.scrollY;
+
+          if (currentScrollY > lastScrollY.current) {
+              setIsVisible(false);
+          } else {
+              setIsVisible(true);
+          }
+
+          lastScrollY.current = currentScrollY;
+      };
+
+      window.addEventListener('scroll', handleScroll);
+      return () => {
+          document.body.style.paddingTop = '';
+          window.removeEventListener('scroll', handleScroll);
+      }
+  }, []);
 
   useEffect(() => {
     fetchStatus();
@@ -31,8 +58,17 @@ const Finalizado = ({ orderId }) => {
 
   return (
     <div>
-      <h3>Status do Pedido: {orderId}</h3>
-      <p>{status ? `Status atual: ${status}` : "Carregando status..."}</p>
+      <header className={`header ${isVisible ? '' : 'hidden'}`}>
+        <div className="titles">
+            <h1>MICHELANGELO</h1>
+            <h2>Pizzaria</h2>
+        </div>
+      </header>
+      <div className="statusP">
+        <h3>Status do Pedido: {orderId}</h3>
+        <p>{status ? `Status atual: ${status}` : "Carregando status..."}</p>
+      </div>
+      <div className="FootPag"><Footer/></div>
     </div>
   );
 };
