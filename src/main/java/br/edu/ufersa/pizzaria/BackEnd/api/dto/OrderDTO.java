@@ -44,6 +44,7 @@ public class OrderDTO {
   }
 
   public record OrderResponse(
+      Long id,
       Client clientId,
       LocalDateTime orderDate,
       OrderStatus status,
@@ -52,6 +53,7 @@ public class OrderDTO {
 
     public OrderResponse(Order order) {
       this(
+          order.getId(),
           order.getClient(),
           order.getOrderDate(),
           order.getStatus(),

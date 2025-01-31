@@ -1,12 +1,13 @@
 "use client";
-
 import "./Carrinho.css";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Cookies from "js-cookie";
 
 const Carrinho = ({ togglePopup }) => {
-    const [itens, setItens] = useState([]);
+  const [itens, setItens] = useState([]);
+  const router = useRouter();
 
   useEffect(() => {
       const carrinhoSalvo = JSON.parse(Cookies.get("carrinho") || "[]");
@@ -30,7 +31,6 @@ const Carrinho = ({ togglePopup }) => {
   };
 
   const continuarPedido = () => {
-    console.log("Continuando o pedido...");
     togglePopup();
   };
 
@@ -76,8 +76,17 @@ const Carrinho = ({ togglePopup }) => {
         )}
 
         <div className="divider">
-          <button className="finalizar" onClick={() => {togglePopup();}}>Finalizar Pedido</button>
-          <button className="continue-button" disabled={itens.length === 0} onClick={continuarPedido}>
+          <button className="finalizar" onClick={(event) => {
+            event.stopPropagation();
+            router.push("/pagamento");
+            togglePopup();
+          }}>
+            Finalizar Pedido
+          </button>
+          
+          <button className="continue-button" disabled={itens.length === 0} onClick={(event) => {
+              event.stopPropagation(); 
+              continuarPedido();}}>
             Continuar Pedindo
           </button>
         </div>

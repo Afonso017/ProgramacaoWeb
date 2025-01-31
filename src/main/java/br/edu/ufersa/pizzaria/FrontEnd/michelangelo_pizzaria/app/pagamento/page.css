@@ -1,0 +1,74 @@
+.resumo-pedido {
+  max-width: 500px;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-family: Arial, sans-serif;
+  background: #fff;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+
+.item-pedido {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  color: #888;
+}
+
+.subtotal, .total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  padding: 10px 0;
+}
+
+.total {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.opcao-entrega {
+  margin-top: 15px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+select {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.retirada-info {
+  margin-top: 15px;
+  font-size: 14px;
+  padding: 10px;
+  background: #f8f8f8;
+  border-radius: 5px;
+}
+
+.retirada-info strong {
+  font-size: 16px;
+}
