@@ -2,7 +2,8 @@
 import "./Cardapio.css"
 import Image from 'next/image';
 import Produto from './Produto';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 const Cardapio = () => {
     const pizzas = [
@@ -87,6 +88,12 @@ const Cardapio = () => {
             img: "/pizzas/pizza-pepperoni.webp"
         },
     ];
+
+    useEffect(() => {
+        axios.get("/api/v1/additional")
+            .then((res) => console.log(res.data))
+            .catch((err) => console.error("Erro ao buscar dados:", err));
+    }, []);
 
     const bebidas = [
         {
