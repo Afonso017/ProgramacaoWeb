@@ -95,6 +95,12 @@
   border-radius: 10px;
 }
 
+@media (min-width: 1450px) and (max-width: 1800px) {
+  .item-carrinho .remove-btn {
+    right: 500px;
+  }
+}
+
 .item-carrinho .remove-btn img{
   padding: 0px 3px 0px 0px;
 }

@@ -17,7 +17,14 @@ hr.vertical-line {
     transform: rotate(90deg);
     margin: auto;
     padding: 0;
-    width: 400%;
+    width: 260%;
     position: relative;
-    right: 140%;
+    right: 80%;
 }
+
+@media (min-width: 1450px) and (max-width: 1800px) {
+    hr.vertical-line {
+        width: 300%;
+        right: 100%;
+    }
+  }
