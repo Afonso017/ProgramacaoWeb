@@ -3,8 +3,6 @@ package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorCreate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorUpdate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.PriceDTO.PriceCreate;

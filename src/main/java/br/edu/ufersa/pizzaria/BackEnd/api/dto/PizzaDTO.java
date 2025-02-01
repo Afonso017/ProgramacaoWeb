@@ -2,14 +2,9 @@ package br.edu.ufersa.pizzaria.BackEnd.api.dto;
 
 import java.math.BigDecimal;
 import java.util.List;
-
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Additional;
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Border;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Flavor;
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Pizza;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.BorderRepository;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.FlavorRepository;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.AdditionalRepository;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotBlank;

@@ -1,10 +1,8 @@
 package br.edu.ufersa.pizzaria.BackEnd.domain.service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-
 import br.edu.ufersa.pizzaria.BackEnd.domain.entity.OrderItem;
 import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ClientRepository;
 import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ProductRepository;

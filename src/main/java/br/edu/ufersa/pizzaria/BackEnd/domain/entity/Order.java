@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderItemCreate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderItemUpdate;
 import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdate;
 import jakarta.persistence.CascadeType;
