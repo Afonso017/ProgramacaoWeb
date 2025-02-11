@@ -1,10 +1,10 @@
-package br.edu.ufersa.pizzaria.Michelangelo;
+package br.edu.ufersa.pizzaria.backend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class MichelangeloApplicationTests {
+class BackendApplicationTests {
 
 	@Test
 	void contextLoads() {

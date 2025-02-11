@@ -1,115 +1,64 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
+package br.edu.ufersa.pizzaria.backend.domain.entity;
 
-import java.math.BigDecimal;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import lombok.*;
+import java.math.BigDecimal;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name = "OrderItem")
 public class OrderItem {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @ManyToOne
+  @JoinColumn(name = "order_id", nullable = false)
+  @JsonIgnore
+  private Order order;
 
   @ManyToOne
   @JoinColumn(name = "product_id", nullable = false)
   @JsonIgnore
   private Product product;
 
-//  @ManyToOne
-//  @JoinColumn(name = "order_id", nullable = false)
-//  @JsonIgnore
-//  private Order order;
-
   @Positive(message = "A quantidade deve ser maior que zero")
-  private int quantity;
+  @Column(nullable = false)
+  private Integer quantity;
 
   @Positive(message = "O preço deve ser maior que zero")
   @Column(precision = 10, scale = 2, nullable = false)
   private BigDecimal price;
 
-  public OrderItem() {
+  public OrderItem(Product product, Integer quantity) {
+    this.product = product;
+    this.quantity = quantity;
+    this.setPrice();
   }
 
-  public OrderItem(Long id, Product product, Order order, int quantity, BigDecimal price) {
+  public OrderItem(Long id,Product product, Integer quantity) {
     this.id = id;
     this.product = product;
     this.quantity = quantity;
-    this.price = price;
+    this.setPrice();
   }
 
-  public OrderItem(Product product, int quantity, BigDecimal price) {
-    this.product = product;
-    this.quantity = quantity;
-    this.price = price;
-  }
-
-  public OrderItem(Product product, Order order, int quantity, BigDecimal price) {
-    this.product = product;
-    this.quantity = quantity;
-    this.price = price;
-  }
-
-  public OrderItem(Product entity, Integer quantity) {
-    this.product = entity;
-    this.quantity = quantity;
-  }
-
-  /**
-   * @return Long return the id
-   */
-  public Long getId() {
-    return id;
-  }
-
-  /**
-   * @param id the id to set
-   */
-  public void setId(Long id) {
+  public OrderItem(Long id, Product product, Order order, Integer quantity) {
     this.id = id;
-  }
-
-  /**
-   * @return Product return the product
-   */
-  public Product getProduct() {
-    return product;
-  }
-
-  /**
-   * @return int return the quantity
-   */
-  public int getQuantity() {
-    return quantity;
-  }
-
-  /**
-   * @param quantity the quantity to set
-   */
-  public void setQuantity(int quantity) {
+    this.product = product;
+    this.order = order;
     this.quantity = quantity;
+    this.setPrice();
   }
 
-  /**
-   * @return BigDecimal return the price
-   */
-  public BigDecimal getPrice() {
-    return price;
+  public void setPrice() {
+    if (this.product != null) {
+      this.price = product.getPrice().multiply(BigDecimal.valueOf(quantity.longValue()));
+    }
   }
-
-  /**
-   * @param price the price to set
-   */
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
 }

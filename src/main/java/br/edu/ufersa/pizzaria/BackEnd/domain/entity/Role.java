@@ -1,12 +1,17 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
+package br.edu.ufersa.pizzaria.backend.domain.entity;
 
 import jakarta.persistence.*;
-import utils.RoleName;
+import br.edu.ufersa.pizzaria.backend.utils.RoleName;
+import lombok.*;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
-@Table(name="tb_roles")
+@Table(name="role_tb")
 public class Role {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,5 +22,4 @@ public class Role {
     public String getName() {
         return name.name();
     }
-
 }

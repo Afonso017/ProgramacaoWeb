@@ -1,23 +1,26 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
+package br.edu.ufersa.pizzaria.backend.domain.entity;
 
-import utils.PizzaSizes;
+import br.edu.ufersa.pizzaria.backend.api.dto.PizzaDTO.PizzaCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.PizzaDTO.PizzaUpdate;
+import br.edu.ufersa.pizzaria.backend.utils.PizzaSizes;
+import jakarta.persistence.*;
+import lombok.*;
+
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.List;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.PizzaDTO.PizzaCreate;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import java.util.stream.Collectors;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @PrimaryKeyJoinColumn(name = "product_id")
 public class Pizza extends Product {
+
     @ManyToOne
     @JoinColumn(name = "flavor_one_id", nullable = false)
     private Flavor flavorOne;
@@ -31,48 +34,65 @@ public class Pizza extends Product {
     private Border border;
 
     @ManyToMany
-    @JoinTable(name = "pizza_additional", joinColumns = @JoinColumn(name = "pizza_id"), inverseJoinColumns = @JoinColumn(name = "additional_id"))
+    @JoinTable(
+        name = "pizza_additional",                               // Nome da tabela Gerada
+        joinColumns = @JoinColumn(name = "pizza_id"),            // Nome da coluna que referencia a entidade Pizza
+        inverseJoinColumns = @JoinColumn(name = "additional_id") // Nome da coluna que referencia a entidade Additional
+    )
     private List<Additional> aditionals = new ArrayList<>();
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private PizzaSizes size;
 
-    public Pizza() {
+    public Pizza(PizzaCreate pizzaCreate){
+        this.setComunAttributes(
+                pizzaCreate.name(), pizzaCreate.description(),
+                pizzaCreate.image(), pizzaCreate.flavorOne(),
+                pizzaCreate.flavorTwo(), pizzaCreate.border(),
+                pizzaCreate.aditionals(), pizzaCreate.size()
+        );
     }
 
-    public Pizza(String name, String description, BigDecimal price, String image, Flavor flavorOne, Flavor flavorTwo,
-            Border border, List<Additional> aditionals, PizzaSizes size) {
-        super(name, description, price, image);
-        this.flavorOne = flavorOne;
-        this.flavorTwo = flavorTwo;
-        this.border = border;
-        this.aditionals = aditionals;
+    public void setPizza(PizzaUpdate pizzaUpdate) {
+        this.setId(pizzaUpdate.id());
+        this.setComunAttributes(
+                pizzaUpdate.name(), pizzaUpdate.description(),
+                pizzaUpdate.image(), pizzaUpdate.flavorOne(),
+                pizzaUpdate.flavorTwo(), pizzaUpdate.border(),
+                pizzaUpdate.aditionals(), pizzaUpdate.size()
+        );
+    }
+
+    public void setComunAttributes(String name, String description, String image,
+                                   Long flavorOne, Long flavorTwo, Long border, List<Long> aditionals, PizzaSizes size) {
+        if (name != null && !name.isBlank()) {
+            this.setName(name);
+        }
+        if (description != null && !description.isBlank()) {
+            this.setDescription(description);
+        }
+        this.setImage(image);
+        this.flavorOne = flavorOne != null ? new Flavor(flavorOne) : null;
+        this.flavorTwo = flavorTwo != null ? new Flavor(flavorTwo) : null;
+        this.border = border != null ? new Border(border) : null;
+        this.aditionals = aditionals != null ? aditionals.stream().map(Additional::new).collect(Collectors.toList()) : null;
         this.size = size;
-    }
-
-    public void setPizza(PizzaCreate pizza) {
-        this.setName(pizza.name());
-        this.setDescription(pizza.description());
-        this.setImage(pizza.image());
-        this.setFlavorOne(new Flavor(pizza.flavorOne()));
-        this.setFlavorTwo(new Flavor(pizza.flavorTwo()));
-        this.setBorder(new Border(pizza.border()));
-        this.setAditionals(pizza.aditionals().stream().map(Additional::new).toList());
-        this.setSize(pizza.size());
-        this.setPrice(this.getPrice());
     }
 
     @Override
     public BigDecimal getPrice() {
         BigDecimal calculatedPrice = BigDecimal.ZERO;
 
-        // Adiciona o preço do primeiro sabor
-        calculatedPrice = calculatedPrice.add(flavorOne.getPriceEntry(size));
-
-        // Adiciona o preço do segundo sabor (caso exista)
+        // Adiciona a metade da soma dos preços dos sabores
         if (flavorTwo != null) {
-            calculatedPrice = calculatedPrice.add(flavorTwo.getPriceEntry(size));
+            calculatedPrice = flavorOne.getPriceEntry(size).getValue()
+                    .add(flavorTwo.getPriceEntry(size).getValue())
+                    .divide(BigDecimal.valueOf(2), new MathContext(10));
+        }
+        else {
+            // Adiciona o preço do primeiro sabor
+            calculatedPrice = calculatedPrice.add(flavorOne.getPriceEntry(size).getValue());
         }
 
         // Adiciona o preço da borda (caso exista)
@@ -90,75 +110,4 @@ public class Pizza extends Product {
         // Retorna o preço total calculado somado ao preço base
         return calculatedPrice;
     }
-
-    /**
-     * @return Flavor return the flavorOne
-     */
-    public Flavor getFlavorOne() {
-        return flavorOne;
-    }
-
-    /**
-     * @param flavorOne the flavorOne to set
-     */
-    public void setFlavorOne(Flavor flavorOne) {
-        this.flavorOne = flavorOne;
-    }
-
-    /**
-     * @return Flavor return the flavorTwo
-     */
-    public Flavor getFlavorTwo() {
-        return flavorTwo;
-    }
-
-    /**
-     * @param flavorTwo the flavorTwo to set
-     */
-    public void setFlavorTwo(Flavor flavorTwo) {
-        this.flavorTwo = flavorTwo;
-    }
-
-    /**
-     * @return Border return the border
-     */
-    public Border getBorder() {
-        return border;
-    }
-
-    /**
-     * @param border the border to set
-     */
-    public void setBorder(Border border) {
-        this.border = border;
-    }
-
-    /**
-     * @return List<Additional> return the aditionals
-     */
-    public List<Additional> getAditionals() {
-        return aditionals;
-    }
-
-    /**
-     * @param aditionals the aditionals to set
-     */
-    public void setAditionals(List<Additional> aditionals) {
-        this.aditionals = aditionals;
-    }
-
-    /**
-     * @return PizzaSizes return the size
-     */
-    public PizzaSizes getSize() {
-        return size;
-    }
-
-    /**
-     * @param size the size to set
-     */
-    public void setSize(PizzaSizes size) {
-        this.size = size;
-    }
-
 }

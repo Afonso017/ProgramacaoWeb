@@ -1,22 +1,15 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.restControllers;
+package br.edu.ufersa.pizzaria.backend.api.restControllers;
 
-import java.util.List;
+import br.edu.ufersa.pizzaria.backend.api.dto.AdditionalDTO.AdditionalCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.AdditionalDTO.AdditionalResponse;
+import br.edu.ufersa.pizzaria.backend.domain.service.AdditionalService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.AdditionalDTO.AdditionalCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.AdditionalDTO.AdditionalResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.service.AdditionalService;
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/additional")
 public class AdditionalController {
 

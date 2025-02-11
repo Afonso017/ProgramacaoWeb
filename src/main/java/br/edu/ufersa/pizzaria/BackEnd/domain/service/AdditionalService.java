@@ -1,12 +1,14 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
+import br.edu.ufersa.pizzaria.backend.api.dto.AdditionalDTO.AdditionalCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.AdditionalDTO.AdditionalResponse;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Additional;
+import br.edu.ufersa.pizzaria.backend.domain.repository.AdditionalRepository;
 import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.AdditionalDTO.AdditionalCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.AdditionalDTO.AdditionalResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Additional;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.AdditionalRepository;
 
 @Service
 public class AdditionalService {
@@ -17,10 +19,7 @@ public class AdditionalService {
   }
 
   public List<AdditionalResponse> listAll() {
-    List<AdditionalResponse> additionalList = repository.findAll()
-        .stream().map(additional -> new AdditionalResponse(additional))
-        .collect(Collectors.toList());
-    return additionalList;
+    return repository.findAll().stream().map(AdditionalResponse::new).collect(Collectors.toList());
   }
 
   public AdditionalResponse save(AdditionalCreate additionalCreate) {
@@ -37,10 +36,7 @@ public class AdditionalService {
     Additional additional = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Adicional não encontrado"));
 
-    additional.setName(additionalCreate.name());
-    additional.setDescription(additionalCreate.description());
-    additional.setPrice(additionalCreate.price());
-    additional.setImage(additionalCreate.image());
+    additional.setAdditional(additionalCreate);
 
     repository.save(additional);
 
@@ -61,7 +57,10 @@ public class AdditionalService {
     return new AdditionalResponse(additional);
   }
 
-  public List<Additional> findAllById(List<Long> additionals) {
-    return repository.findAllById(additionals);
+  public BigDecimal getPriceEntry(Long id) {
+    Additional additional = repository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Adicional não encontrado"));
+
+    return additional.getPrice();
   }
 }

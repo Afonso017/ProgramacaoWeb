@@ -1,22 +1,16 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.restControllers;
+package br.edu.ufersa.pizzaria.backend.api.restControllers;
 
-import java.util.List;
+import br.edu.ufersa.pizzaria.backend.api.dto.BorderDTO.BorderCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.BorderDTO.BorderResponse;
+import br.edu.ufersa.pizzaria.backend.domain.service.BorderService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.BorderDTO.BorderCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.BorderDTO.BorderResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.service.BorderService;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/api/v1/border")
 public class BorderController {
 
@@ -28,12 +22,12 @@ public class BorderController {
 
   @GetMapping
   public ResponseEntity<List<BorderResponse>> listAll() {
-    return new ResponseEntity<List<BorderResponse>>(service.listAll(), HttpStatus.OK);
+    return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
   }
 
   @PostMapping
   public ResponseEntity<BorderResponse> create(@Valid @RequestBody BorderCreate border) {
-    return new ResponseEntity<BorderResponse>(service.save(border), HttpStatus.CREATED);
+    return new ResponseEntity<>(service.save(border), HttpStatus.CREATED);
   }
 
   @PutMapping("/{id}")

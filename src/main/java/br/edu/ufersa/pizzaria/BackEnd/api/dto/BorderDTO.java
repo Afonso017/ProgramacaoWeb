@@ -1,25 +1,27 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.dto;
+package br.edu.ufersa.pizzaria.backend.api.dto;
 
-import java.math.BigDecimal;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Border;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Border;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
+
+import java.math.BigDecimal;
 
 public class BorderDTO {
   public record BorderResponse(
       Long id,
       String name,
-      BigDecimal price) {
-
+      BigDecimal price
+  ) {
     public BorderResponse(Border border) {
       this(
           border.getId(),
           border.getName(),
-          border.getPrice());
+          border.getPrice()
+      );
     }
   }
 
-  // DTO's Requests \/
+  // DTO's Requests
 
   public record BorderCreate(
       @NotBlank String name,

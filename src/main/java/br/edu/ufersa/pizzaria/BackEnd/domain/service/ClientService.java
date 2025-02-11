@@ -1,22 +1,15 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import br.edu.ufersa.pizzaria.backend.api.dto.ClientDTO.*;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Client;
+import br.edu.ufersa.pizzaria.backend.domain.entity.ClientDelivery;
+import br.edu.ufersa.pizzaria.backend.domain.entity.ClientLocal;
+import br.edu.ufersa.pizzaria.backend.domain.entity.ClientRetirement;
+import br.edu.ufersa.pizzaria.backend.domain.repository.ClientRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ClientRepository;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientDeliveryCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientDeliveryResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientLocalCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientLocalResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientRetirementCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientRetirementResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Client;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.ClientDelivery;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.ClientLocal;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.ClientRetirement;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ClientService {
@@ -27,26 +20,43 @@ public class ClientService {
     this.repository = repository;
   }
 
+  public List<ClientDeliveryResponse> findAllDeliveryClients() {
+    return repository.findAllDeliveries().stream().map(ClientDeliveryResponse::new).toList();
+  }
+
+  public List<ClientLocalResponse> findAllLocalClients() {
+    return repository.findAllLocals().stream().map(ClientLocalResponse::new).toList();
+  }
+
+  public List<ClientRetirementResponse> findAllRetirementClients() {
+    return repository.findAllRetirements().stream().map(ClientRetirementResponse::new).toList();
+  }
+
   public ClientDeliveryResponse saveClientDelivery(ClientDeliveryCreate client) {
-    ClientDelivery savedClient = repository.save((ClientDelivery) client.toEntity());
+    if (repository.existsByEmail(client.email())) {
+      throw new IllegalArgumentException("Email já cadastrado");
+    }
+
+    ClientDelivery savedClient = repository.save(client.toEntity());
     return new ClientDeliveryResponse(savedClient);
   }
 
   public ClientLocalResponse saveClientLocal(ClientLocalCreate client) {
-    ClientLocal savedClient = repository.save((ClientLocal) client.toEntity());
+    if (repository.existsByEmail(client.email())) {
+      throw new IllegalArgumentException("Email já cadastrado");
+    }
+
+    ClientLocal savedClient = repository.save(client.toEntity());
     return new ClientLocalResponse(savedClient);
   }
 
   public ClientRetirementResponse saveClientRetirement(ClientRetirementCreate client) {
-    ClientRetirement savedClient = repository.save((ClientRetirement) client.toEntity());
-    return new ClientRetirementResponse(savedClient);
-  }
+    if (repository.existsByEmail(client.email())) {
+      throw new IllegalArgumentException("Email já cadastrado");
+    }
 
-  public List<ClientResponse> findAllClients() {
-    return repository.findAll()
-        .stream()
-        .map(ClientResponse::new)
-        .collect(Collectors.toList());
+    ClientRetirement savedClient = repository.save(client.toEntity());
+    return new ClientRetirementResponse(savedClient);
   }
 
   public ResponseEntity<?> findClientById(Long id) {
@@ -60,29 +70,21 @@ public class ClientService {
       } else {
         return ResponseEntity.ok(new ClientRetirementResponse((ClientRetirement) client.get()));
       }
-    } else {
-      return ResponseEntity.notFound().build();
     }
+
+    throw new IllegalArgumentException("Cliente não encontrado");
   }
 
-  public ResponseEntity<?> deleteClient(Long id) {
+  public void deleteClient(Long id) {
     Optional<Client> client = repository.findById(id);
 
     if (client.isPresent()) {
       Client clientEntity = client.get();
-
-      if (clientEntity instanceof ClientDelivery) {
-        repository.delete((ClientDelivery) clientEntity); // Deleta o cliente do tipo ClientDelivery
-      } else if (clientEntity instanceof ClientLocal) {
-        repository.delete((ClientLocal) clientEntity); // Deleta o cliente do tipo ClientLocal
-      } else if (clientEntity instanceof ClientRetirement) {
-        repository.delete((ClientRetirement) clientEntity); // Deleta o cliente do tipo ClientRetirement
-      }
-
-      return ResponseEntity.ok().build();
-    } else {
-      return ResponseEntity.notFound().build(); // Cliente não encontrado
+      repository.delete(clientEntity);
+      return;
     }
+
+    throw new IllegalArgumentException("Cliente não encontrado");
   }
 
   public ResponseEntity<?> updateClientDelivery(Long id, ClientDeliveryCreate client) {

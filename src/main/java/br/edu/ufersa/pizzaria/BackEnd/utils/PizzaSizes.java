@@ -1,4 +1,4 @@
-package utils;
+package br.edu.ufersa.pizzaria.backend.utils;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
@@ -22,7 +22,7 @@ public enum PizzaSizes {
   @JsonCreator
   public static PizzaSizes fromString(String value) {
     for (PizzaSizes size : PizzaSizes.values()) {
-      if (size.name().equalsIgnoreCase(value)) {
+      if (size.getSize().equalsIgnoreCase(value)) {
         return size;
       }
     }

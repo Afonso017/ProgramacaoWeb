@@ -1,27 +1,14 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.restControllers;
+package br.edu.ufersa.pizzaria.backend.api.restControllers;
 
-import java.util.List;
+import br.edu.ufersa.pizzaria.backend.api.dto.ClientDTO.*;
+import br.edu.ufersa.pizzaria.backend.domain.service.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientDeliveryCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientDeliveryResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientLocalCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientLocalResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientRetirementCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.ClientDTO.ClientRetirementResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.service.ClientService;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/client")
 public class ClientController {
 
@@ -31,27 +18,39 @@ public class ClientController {
     this.service = service;
   }
 
-  @GetMapping
-  public ResponseEntity<List<ClientResponse>> listAllClients() {
-    return new ResponseEntity<>(service.findAllClients(), HttpStatus.OK);
+  @GetMapping("/delivery")
+  public List<ClientDeliveryResponse> findDeliveryClients() {
+    return service.findAllDeliveryClients();
+  }
+
+  @GetMapping("/local")
+  public List<ClientLocalResponse> findLocalClients() {
+    return service.findAllLocalClients();
+  }
+
+  @GetMapping("/retirement")
+  public List<ClientRetirementResponse> findRetirementClients() {
+    return service.findAllRetirementClients();
   }
 
   // Create Client Delivery
   @PostMapping("/delivery")
-  public ResponseEntity<ClientDeliveryResponse> createClientDelivery(@Valid @RequestBody ClientDeliveryCreate client) {
+  public ResponseEntity<ClientDeliveryResponse> createClientDelivery(
+          @Valid @RequestBody ClientDeliveryCreate client) {
     return new ResponseEntity<>(service.saveClientDelivery(client), HttpStatus.CREATED);
   }
 
   // Create Client Local
   @PostMapping("/local")
-  public ResponseEntity<ClientLocalResponse> createClientLocal(@Valid @RequestBody ClientLocalCreate client) {
+  public ResponseEntity<ClientLocalResponse> createClientLocal(
+          @Valid @RequestBody ClientLocalCreate client) {
     return new ResponseEntity<>(service.saveClientLocal(client), HttpStatus.CREATED);
   }
 
   // Create Client Retirement
   @PostMapping("/retirement")
   public ResponseEntity<ClientRetirementResponse> createClientRetirement(
-      @Valid @RequestBody ClientRetirementCreate client) {
+          @Valid @RequestBody ClientRetirementCreate client) {
     return new ResponseEntity<>(service.saveClientRetirement(client), HttpStatus.CREATED);
   }
 
@@ -62,18 +61,19 @@ public class ClientController {
 
   @PutMapping("/delivery/{id}")
   public ResponseEntity<?> updateClientDelivery(@PathVariable Long id,
-      @Valid @RequestBody ClientDeliveryCreate client) {
+                                                @Valid @RequestBody ClientDeliveryCreate client) {
     return service.updateClientDelivery(id, client);
   }
 
   @PutMapping("/local/{id}")
-  public ResponseEntity<?> updateClientLocal(@PathVariable Long id, @Valid @RequestBody ClientLocalCreate client) {
+  public ResponseEntity<?> updateClientLocal(@PathVariable Long id,
+                                             @Valid @RequestBody ClientLocalCreate client) {
     return service.updateClientLocal(id, client);
   }
 
   @PutMapping("/retirement/{id}")
   public ResponseEntity<?> updateClientRetirement(@PathVariable Long id,
-      @Valid @RequestBody ClientRetirementCreate client) {
+                                                  @Valid @RequestBody ClientRetirementCreate client) {
     return service.updateClientRetirement(id, client);
   }
 

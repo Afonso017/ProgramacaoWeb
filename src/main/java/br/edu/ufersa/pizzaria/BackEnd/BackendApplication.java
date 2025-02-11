@@ -1,13 +1,12 @@
-package br.edu.ufersa.pizzaria.BackEnd;
+package br.edu.ufersa.pizzaria.backend;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class MichelangeloApplication {
+public class BackendApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(MichelangeloApplication.class, args);
+		SpringApplication.run(BackendApplication.class, args);
 	}
-
 }

@@ -1,23 +1,17 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.restControllers;
+package br.edu.ufersa.pizzaria.backend.api.restControllers;
 
-import java.util.List;
+import br.edu.ufersa.pizzaria.backend.api.dto.FlavorDTO.FlavorCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.FlavorDTO.FlavorResponse;
+import br.edu.ufersa.pizzaria.backend.api.dto.FlavorDTO.FlavorUpdate;
+import br.edu.ufersa.pizzaria.backend.domain.service.FlavorService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorUpdate;
-import br.edu.ufersa.pizzaria.BackEnd.domain.service.FlavorService;
-import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.List;
+
+@RestController
 @RequestMapping("/api/v1/flavor")
 public class FlavorController {
 
@@ -29,18 +23,17 @@ public class FlavorController {
 
   @GetMapping
   public ResponseEntity<List<FlavorResponse>> findAll() {
-    return new ResponseEntity<List<FlavorResponse>>(service.listAll(), HttpStatus.OK);
+    return new ResponseEntity<>(service.listAll(), HttpStatus.OK);
   }
 
   @PostMapping
   public ResponseEntity<FlavorResponse> create(@Valid @RequestBody FlavorCreate flavor) {
-    return new ResponseEntity<FlavorResponse>(service.save(flavor), HttpStatus.CREATED);
+    return new ResponseEntity<>(service.save(flavor), HttpStatus.CREATED);
   }
 
-  @PutMapping("/{id}")
-  public ResponseEntity<FlavorResponse> update(@PathVariable Long id,
-      @Valid @RequestBody FlavorUpdate flavor) {
-    return new ResponseEntity<>(service.update(id, flavor), HttpStatus.OK);
+  @PutMapping()
+  public ResponseEntity<FlavorResponse> update(@Valid @RequestBody FlavorUpdate flavor) {
+    return new ResponseEntity<>(service.update(flavor), HttpStatus.OK);
   }
 
   @DeleteMapping("/{id}")

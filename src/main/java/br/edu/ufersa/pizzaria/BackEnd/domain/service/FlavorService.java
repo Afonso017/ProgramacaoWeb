@@ -1,14 +1,17 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
+import br.edu.ufersa.pizzaria.backend.api.dto.FlavorDTO.FlavorCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.FlavorDTO.FlavorResponse;
+import br.edu.ufersa.pizzaria.backend.api.dto.FlavorDTO.FlavorUpdate;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Flavor;
+import br.edu.ufersa.pizzaria.backend.domain.repository.FlavorRepository;
+import br.edu.ufersa.pizzaria.backend.utils.PizzaSizes;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.FlavorDTO.FlavorUpdate;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Flavor;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.FlavorRepository;
-import jakarta.transaction.Transactional;
 
 @Service
 public class FlavorService {
@@ -20,11 +23,7 @@ public class FlavorService {
 
   @Transactional
   public List<FlavorResponse> listAll() {
-    List<FlavorResponse> flavorList = repository.findAll()
-        .stream().map(flavor -> new FlavorResponse(flavor))
-        .collect(Collectors.toList());
-
-    return flavorList;
+    return repository.findAll().stream().map(FlavorResponse::new).collect(Collectors.toList());
   }
 
   public FlavorResponse save(FlavorCreate flavorCreate) throws IllegalArgumentException {
@@ -38,11 +37,11 @@ public class FlavorService {
   }
 
   @Transactional
-  public FlavorResponse update(Long id, FlavorUpdate flavorCreate) {
-    Flavor existingFlavor = repository.findById(id)
+  public FlavorResponse update(FlavorUpdate flavorUpdate) {
+    Flavor existingFlavor = repository.findById(flavorUpdate.id())
         .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
 
-    existingFlavor.setFlavor(flavorCreate);
+    existingFlavor.setFlavor(flavorUpdate);
 
     repository.save(existingFlavor);
 
@@ -63,5 +62,12 @@ public class FlavorService {
         .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
 
     return new FlavorResponse(flavor);
+  }
+
+  public BigDecimal getPriceEntry(Long id, PizzaSizes size) {
+    Flavor flavor = repository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Sabor não encontrado"));
+
+    return flavor.getPriceEntry(size).getValue();
   }
 }

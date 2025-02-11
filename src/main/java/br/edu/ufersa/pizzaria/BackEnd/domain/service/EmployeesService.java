@@ -1,4 +1,4 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
 import org.springframework.stereotype.Service;
 

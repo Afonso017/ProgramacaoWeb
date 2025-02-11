@@ -1,27 +1,31 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
+package br.edu.ufersa.pizzaria.backend.domain.entity;
 
-import java.math.BigDecimal;
+import br.edu.ufersa.pizzaria.backend.api.dto.ProductDTO.ProductCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.ProductDTO.ProductResponse;
+import br.edu.ufersa.pizzaria.backend.api.dto.ProductDTO.ProductUpdate;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.Inheritance;
+import lombok.*;
 
+import java.math.BigDecimal;
+
+@Getter
+@Setter
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "product_type")
+  @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "productType")
 @JsonSubTypes({
-    @JsonSubTypes.Type(value = Pizza.class, name = "pizza"),
+        @JsonSubTypes.Type(value = Pizza.class, name = "pizza")
 })
 public class Product {
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @NotBlank
@@ -36,9 +40,6 @@ public class Product {
 
   private String image;
 
-  public Product() {
-  }
-
   public Product(Long id) {
     this.id = id;
   }
@@ -50,82 +51,24 @@ public class Product {
     this.image = image;
   }
 
-  public Product(Long id, String name, String description, BigDecimal price, String image) {
-    this.id = id;
-    this.name = name;
-    this.description = description;
-    this.price = price;
-    this.image = image;
+  public Product(ProductResponse productResponse) {
+    this.id = productResponse.id();
+    this.name = productResponse.name();
+    this.price = productResponse.price();
   }
 
-  /**
-   * @return Long return the id
-   */
-  public Long getId() {
-    return id;
+  public Product(ProductCreate productCreate) {
+    this.name = productCreate.name();
+    this.description = productCreate.description();
+    this.price = productCreate.price();
+    this.image = productCreate.image();
   }
 
-  /**
-   * @param id the id to set
-   */
-  public void setId(Long id) {
-    this.id = id;
+  public Product(ProductUpdate productUpdate) {
+    this.id = productUpdate.id();
+    this.name = productUpdate.name();
+    this.description = productUpdate.description();
+    this.price = productUpdate.price();
+    this.image = productUpdate.image();
   }
-
-  /**
-   * @return String return the name
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * @param name the name to set
-   */
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  /**
-   * @return String return the description
-   */
-  public String getDescription() {
-    return description;
-  }
-
-  /**
-   * @param description the description to set
-   */
-  public void setDescription(String description) {
-    this.description = description;
-  }
-
-  /**
-   * @return BigDecimal return the price
-   */
-  public BigDecimal getPrice() {
-    return price;
-  }
-
-  /**
-   * @param price the price to set
-   */
-  public void setPrice(BigDecimal price) {
-    this.price = price;
-  }
-
-  /**
-   * @return String return the image
-   */
-  public String getImage() {
-    return image;
-  }
-
-  /**
-   * @param image the image to set
-   */
-  public void setImage(String image) {
-    this.image = image;
-  }
-
 }

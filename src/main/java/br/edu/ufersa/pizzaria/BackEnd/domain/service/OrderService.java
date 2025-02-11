@@ -1,34 +1,28 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
+import br.edu.ufersa.pizzaria.backend.api.dto.OrderDTO.*;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Order;
+import br.edu.ufersa.pizzaria.backend.domain.entity.OrderItem;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Pizza;
+import br.edu.ufersa.pizzaria.backend.domain.repository.ClientRepository;
+import br.edu.ufersa.pizzaria.backend.domain.repository.OrderRepository;
+import br.edu.ufersa.pizzaria.backend.utils.OrderStatus;
+import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.OrderItem;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ClientRepository;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.ProductRepository;
-import org.springframework.stereotype.Service;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderItemUpdate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdateItems;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdateStatus;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.StatusOrderResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Order;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.OrderRepository;
-import utils.OrderStatus;
 
 @Service
 public class OrderService {
 
   private final OrderRepository repository;
   private final ClientRepository clientRepository;
-  private final ProductRepository productRepository;
+  private final PizzaService pizzaService;
 
-  public OrderService(OrderRepository repository, ClientRepository clientRepository, ProductRepository productRepository) {
+  public OrderService(OrderRepository repository, ClientRepository clientRepository, PizzaService pizzaService) {
     this.repository = repository;
     this.clientRepository = clientRepository;
-    this.productRepository = productRepository;
+    this.pizzaService = pizzaService;
   }
 
   public List<OrderResponse> findAll() {
@@ -36,11 +30,15 @@ public class OrderService {
   }
 
   public OrderResponse save(OrderCreate orderCreate) {
-    LocalDateTime orderDate = LocalDateTime.now();
-    Order newOrder = toEntity(orderCreate);
-    newOrder.setOrderDate(orderDate);
+    for (OrderItemCreate item : orderCreate.items()) {
+      if (item.product() instanceof Pizza pizza) {
+        pizza = pizzaService.save(pizza);
+        orderCreate.items().set(orderCreate.items().indexOf(item), new OrderItemCreate(pizza, item.quantity()));
+      }
+    }
 
-    System.out.println("Ordem: " + newOrder.toString());
+    Order newOrder = toEntity(orderCreate);
+    newOrder.setOrderDate(LocalDateTime.now().withNano(0));
 
     repository.save(newOrder);
 
@@ -51,10 +49,7 @@ public class OrderService {
     Order order = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
 
-    // Atualiza o pedido, caso o status não seja de pedido finalizado ou entregue
-    if (order.getStatus() == OrderStatus.FINALIZED || order.getStatus() == OrderStatus.DELIVERED) {
-      throw new IllegalArgumentException("Não é possível alterar o status de um pedido finalizado ou entregue");
-    }
+    validateOrderStatus(orderUpdate.status());
 
     order.setStatus(orderUpdate.status());
     repository.save(order);
@@ -63,32 +58,44 @@ public class OrderService {
   }
 
   public OrderResponse updateItems(Long id, OrderUpdateItems items) {
-    Order order = repository.findByIdWithItems(id)
+    Order order = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
 
-    // Atualiza o pedido, caso o status não seja de pedido finalizado ou entregue
-    if (order.getStatus() == OrderStatus.FINALIZED || order.getStatus() == OrderStatus.DELIVERED) {
-      throw new IllegalArgumentException("Não é possível alterar o status de um pedido finalizado ou entregue");
+    validateOrderStatus(order.getStatus());
+
+    for (OrderItemUpdate item : items.items()) {
+      if (item.product() instanceof Pizza pizza) {
+        System.out.println(pizza.getId());
+        pizza = pizzaService.save(pizza);
+        items.items().set(items.items().indexOf(item), new OrderItemUpdate(item.id(), pizza, item.quantity()));
+      }
     }
 
-    order.setItems(items.items().stream().map(OrderItemUpdate::toEntity).collect(Collectors.toList()));
-    order.setTotalAmount(items.totalAmount());
+    order.setItems(items.items().stream().map(OrderItemUpdate::toEntity).toList());
+
     repository.save(order);
 
     return new OrderResponse(order);
   }
 
   public StatusOrderResponse findStatus(Long id) {
-    return new StatusOrderResponse(repository.findOrderStatusById(id));
+    Order order = repository.findById(id)
+        .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
+
+    return new StatusOrderResponse(order.getStatus());
   }
 
   public OrderResponse update(Long id, OrderUpdate orderUpdate) {
-    Order order = repository.findByIdWithItems(id)
+    Order order = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Pedido não encontrado"));
 
-    // Atualiza o pedido, caso o status não seja de pedido finalizado ou entregue
-    if (order.getStatus() == OrderStatus.FINALIZED || order.getStatus() == OrderStatus.DELIVERED) {
-      throw new IllegalArgumentException("Não é possível alterar o status de um pedido finalizado ou entregue");
+    validateOrderStatus(order.getStatus());
+
+    for (OrderItemUpdate item : orderUpdate.items()) {
+      if (item.product() instanceof Pizza pizza) {
+        pizza = pizzaService.save(pizza);
+        orderUpdate.items().set(orderUpdate.items().indexOf(item), new OrderItemUpdate(item.id(), pizza, item.quantity()));
+      }
     }
 
     order.setOrder(orderUpdate);
@@ -115,11 +122,17 @@ public class OrderService {
   public Order toEntity(OrderCreate orderCreate) {
     var client = clientRepository.findById(orderCreate.clientId())
         .orElseThrow(() -> new IllegalArgumentException("Cliente não encontrado"));
+
     var orderItems = orderCreate.items().stream().map(orderItemCreate -> {
-        var product = productRepository.findById(orderItemCreate.productId())
-            .orElseThrow(() -> new IllegalArgumentException("Produto não encontrado"));
-        return new OrderItem(product, orderItemCreate.quantity(), product.getPrice());
+        return new OrderItem(orderItemCreate.product(), orderItemCreate.quantity());
     }).toList();
-    return new Order(client, OrderStatus.PENDING, orderItems, orderCreate.totalAmount());
+
+    return new Order(client, OrderStatus.PENDING, orderItems);
+  }
+
+  public void validateOrderStatus(OrderStatus order) {
+    if (order == OrderStatus.FINALIZED || order == OrderStatus.DELIVERED) {
+      throw new IllegalArgumentException("Não é possível alterar o status de um pedido finalizado ou entregue");
+    }
   }
 }

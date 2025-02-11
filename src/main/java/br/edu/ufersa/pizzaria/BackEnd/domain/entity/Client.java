@@ -1,12 +1,15 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.entity;
+package br.edu.ufersa.pizzaria.backend.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.PrimaryKeyJoinColumn;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.EXTERNAL_PROPERTY, property = "client_type")
@@ -16,34 +19,26 @@ import jakarta.persistence.InheritanceType;
         @JsonSubTypes.Type(value = ClientRetirement.class, name = "retirement")
 })
 @PrimaryKeyJoinColumn(name = "client_id")
-public abstract class Client extends User {
+@Table(name = "client_tb")
+public class Client extends User {
     private String phone;
 
-    public Client() {
+    public Client(Long id) {
+        super(id);
     }
 
-    public Client(String email, String password, String phone) {
+    public Client(String phone, String email, String password) {
         super(email, password);
         this.phone = phone;
     }
 
-    public Client(Long id, String email, String password, String phone) {
+    public Client(Long id, String phone, String email, String password) {
         super(id, email, password);
         this.phone = phone;
     }
 
-    /**
-     * @return String return the phone
-     */
-    public String getPhone() {
-        return phone;
-    }
-
-    /**
-     * @param phone the phone to set
-     */
-    public void setPhone(String phone) {
+    public Client(String email, String password){
+        super(email, password);
         this.phone = phone;
     }
-
 }

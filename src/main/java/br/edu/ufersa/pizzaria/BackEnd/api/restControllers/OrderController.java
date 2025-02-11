@@ -1,31 +1,19 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.restControllers;
+package br.edu.ufersa.pizzaria.backend.api.restControllers;
+
+import br.edu.ufersa.pizzaria.backend.api.dto.OrderDTO.*;
+import br.edu.ufersa.pizzaria.backend.domain.service.OrderService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderResponse;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdateItems;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.OrderUpdateStatus;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.OrderDTO.StatusOrderResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.service.OrderService;
-import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
-@Controller
+@RestController
 @RequestMapping("/api/v1/order")
 public class OrderController {
 
@@ -34,7 +22,7 @@ public class OrderController {
 
   @GetMapping("/status/stream/{id}")
   public SseEmitter streamOrderStatus(@PathVariable Long id) {
-    SseEmitter emitter = new SseEmitter(0L); // 0L indica sem timeout
+    SseEmitter emitter = new SseEmitter(0L);
     sseEmitters.put(id, emitter);
 
     emitter.onCompletion(() -> sseEmitters.remove(id));
@@ -52,13 +40,8 @@ public class OrderController {
     return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
   }
 
-  @GetMapping("/status/{id}")
-  public ResponseEntity<StatusOrderResponse> findStatus(@RequestParam Long id) {
-    return new ResponseEntity<>(service.findStatus(id), HttpStatus.OK);
-  }
-
   @PostMapping
-  public ResponseEntity<OrderResponse> create(@Valid @RequestBody OrderCreate orderCreate) {
+  public ResponseEntity<OrderResponse> save(@Valid @RequestBody OrderCreate orderCreate) {
     return new ResponseEntity<>(service.save(orderCreate), HttpStatus.CREATED);
   }
 
@@ -66,6 +49,11 @@ public class OrderController {
   public ResponseEntity<OrderResponse> update(@PathVariable Long id,
       @Valid @RequestBody OrderUpdate orderUpdate) {
     return new ResponseEntity<>(service.update(id, orderUpdate), HttpStatus.OK);
+  }
+
+  @GetMapping("/status/{id}")
+  public ResponseEntity<StatusOrderResponse> findStatus(@PathVariable Long id) {
+    return new ResponseEntity<>(service.findStatus(id), HttpStatus.OK);
   }
 
   @PutMapping("/status/{id}")
@@ -81,7 +69,7 @@ public class OrderController {
       try {
         emitter.send(SseEmitter.event()
             .name("statusUpdate")
-            .data(orderUpdateStatus.status().getStatus()));
+            .data(orderUpdateStatus.status()));
       } catch (IOException e) {
         emitter.completeWithError(e);
       }

@@ -1,12 +1,14 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
+import br.edu.ufersa.pizzaria.backend.api.dto.BorderDTO.BorderCreate;
+import br.edu.ufersa.pizzaria.backend.api.dto.BorderDTO.BorderResponse;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Border;
+import br.edu.ufersa.pizzaria.backend.domain.repository.BorderRepository;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Service;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.BorderDTO.BorderCreate;
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.BorderDTO.BorderResponse;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Border;
-import br.edu.ufersa.pizzaria.BackEnd.domain.repository.BorderRepository;
 
 @Service
 public class BorderService {
@@ -17,11 +19,7 @@ public class BorderService {
   }
 
   public List<BorderResponse> listAll() {
-    List<BorderResponse> borders = repository.findAll()
-        .stream().map(border -> new BorderResponse(border))
-        .collect(Collectors.toList());
-
-    return borders;
+    return repository.findAll().stream().map(BorderResponse::new).collect(Collectors.toList());
   }
 
   public BorderResponse save(BorderCreate borderCreate) {
@@ -38,8 +36,7 @@ public class BorderService {
     Border border = repository.findById(id)
         .orElseThrow(() -> new IllegalArgumentException("Borda não encontrada"));
 
-    border.setName(borderCreate.name());
-    border.setPrice(borderCreate.price());
+    border.setBorder(borderCreate);
 
     repository.save(border);
 
@@ -58,5 +55,12 @@ public class BorderService {
         .orElseThrow(() -> new IllegalArgumentException("Borda não encontrada"));
 
     return new BorderResponse(border);
+  }
+
+  public BigDecimal getPriceEntry(Long id) {
+    Border border = repository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Borda não encontrada"));
+
+    return border.getPrice();
   }
 }

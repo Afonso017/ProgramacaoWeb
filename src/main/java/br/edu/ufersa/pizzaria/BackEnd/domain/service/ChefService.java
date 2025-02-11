@@ -1,6 +1,6 @@
-package br.edu.ufersa.pizzaria.BackEnd.domain.service;
+package br.edu.ufersa.pizzaria.backend.domain.service;
 
-import br.edu.ufersa.pizzaria.BackEnd.api.dto.UserDTO;
+import br.edu.ufersa.pizzaria.backend.api.dto.UserDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

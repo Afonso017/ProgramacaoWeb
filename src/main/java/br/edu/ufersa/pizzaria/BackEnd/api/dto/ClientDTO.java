@@ -1,96 +1,103 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.dto;
+package br.edu.ufersa.pizzaria.backend.api.dto;
 
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Client;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.ClientDelivery;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.ClientLocal;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.ClientRetirement;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.PositiveOrZero;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Client;
+import br.edu.ufersa.pizzaria.backend.domain.entity.ClientDelivery;
+import br.edu.ufersa.pizzaria.backend.domain.entity.ClientLocal;
+import br.edu.ufersa.pizzaria.backend.domain.entity.ClientRetirement;
+import jakarta.validation.constraints.*;
 
 public class ClientDTO {
   public record ClientResponse(
       String email,
-      String phone) {
-
+      String phone
+  ) {
     public ClientResponse(Client client) {
       this(
           client.getEmail(),
-          client.getPhone());
+          client.getPhone()
+      );
     }
   }
 
   public record ClientDeliveryCreate(
-      String email,
-      String password,
+      Long id,
       String phone,
-      @NotBlank String address) {
-
-    public Client toEntity() {
-      return new ClientDelivery(email, password, phone, address);
+      @Email String email,
+      @Size(min = 8) String password,
+      @NotBlank String address
+  ) {
+    public ClientDelivery toEntity() {
+      return new ClientDelivery(phone, email, password, address);
     }
   }
 
   public record ClientDeliveryResponse(
       Long id,
-      String email,
       String phone,
-      String address) {
-
+      String email,
+      String address
+  ) {
     public ClientDeliveryResponse(ClientDelivery client) {
       this(
           client.getId(),
-          client.getEmail(),
           client.getPhone(),
-          client.getAddress());
+          client.getEmail(),
+          client.getAddress()
+      );
     }
   }
 
   public record ClientLocalCreate(
-      Long id,
-      String email,
-      String password,
       String phone,
-      @PositiveOrZero int clientTable) {
-
-    public Client toEntity() {
-      return new ClientLocal(id, email, password, phone, clientTable);
+      @Email String email,
+      @Size(min = 8) String password,
+      @NotNull @PositiveOrZero Integer clientTable
+  ) {
+    public ClientLocal toEntity() {
+      return new ClientLocal(phone, email, password, clientTable);
     }
   }
 
   public record ClientLocalResponse(
-      String email,
+      Long id,
       String phone,
-      int clientTable) {
-
+      String email,
+      Integer clientTable
+  ) {
     public ClientLocalResponse(ClientLocal client) {
       this(
-          client.getEmail(),
+          client.getId(),
           client.getPhone(),
-          client.getClientTable());
+          client.getEmail(),
+          client.getClientTable()
+      );
     }
   }
 
   public record ClientRetirementCreate(
-      String email,
-      String password,
       String phone,
-      @PositiveOrZero int code) {
-
-    public Client toEntity() {
-      return new ClientRetirement(email, password, phone, code);
+      @Size(min = 8) String email,
+      @Email String password,
+      @NotNull @PositiveOrZero Integer code
+  ) {
+    public ClientRetirement toEntity() {
+      return new ClientRetirement(phone, email, password, code);
     }
   }
 
   public record ClientRetirementResponse(
-      String email,
+      Long id,
       String phone,
-      int code) {
+      String email,
+      Integer code) {
 
     public ClientRetirementResponse(ClientRetirement client) {
       this(
-          client.getEmail(),
+          client.getId(),
           client.getPhone(),
-          client.getCode());
+          client.getEmail(),
+          client.getCode()
+      );
     }
   }
 }

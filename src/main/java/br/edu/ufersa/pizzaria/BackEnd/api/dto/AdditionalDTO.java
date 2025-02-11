@@ -1,9 +1,10 @@
-package br.edu.ufersa.pizzaria.BackEnd.api.dto;
+package br.edu.ufersa.pizzaria.backend.api.dto;
 
-import java.math.BigDecimal;
-import br.edu.ufersa.pizzaria.BackEnd.domain.entity.Additional;
+import br.edu.ufersa.pizzaria.backend.domain.entity.Additional;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
+
+import java.math.BigDecimal;
 
 public class AdditionalDTO {
   public record AdditionalResponse(
@@ -23,7 +24,7 @@ public class AdditionalDTO {
     }
   }
 
-  // DTO's Requests \/
+  // DTO's Requests
 
   public record AdditionalCreate(
       @NotBlank String name,
